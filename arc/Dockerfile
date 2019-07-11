@@ -1,0 +1,102 @@
+# to build:
+# export ARC_VERSION=2.0.0
+# export SPARK_VERSION=2.4.3 
+# export SCALA_VERSION=2.11
+# export HADOOP_VERSION=2.9.2
+# docker build \
+# --build-arg ARC_VERSION \
+# --build-arg SPARK_VERSION \
+# --build-arg SCALA_VERSION \
+# --build-arg HADOOP_VERSION \
+# . -t triplai:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
+
+FROM openjdk:8u212-b04-jdk-slim-stretch 
+
+# Versions
+ARG ARC_VERSION
+ARG SPARK_VERSION
+ARG SCALA_VERSION
+ARG HADOOP_VERSION
+
+# test to ensure all arguments have values then set environment variable
+RUN test -n "$ARC_VERSION"
+ENV ARC_VERSION $ARC_VERSION
+RUN test -n "$SPARK_VERSION"
+ENV SPARK_VERSION $SPARK_VERSION
+RUN test -n "$SCALA_VERSION"
+ENV SCALA_VERSION $SCALA_VERSION
+RUN test -n "$HADOOP_VERSION"
+ENV HADOOP_VERSION $HADOOP_VERSION
+
+ENV SPARK_HOME            /opt/spark
+ENV SPARK_JARS            /opt/spark/jars
+ENV HADOOP_HOME           /opt/hadoop
+ENV SPARK_DOWNLOAD_URL    https://www-us.apache.org/dist/spark
+ENV SPARK_CHECKSUM_URL    https://archive.apache.org/dist/spark
+ENV HADOOP_DOWNLOAD_URL   https://www-us.apache.org/dist/hadoop/common
+ENV HADOOP_CHECKSUM_URL   https://www.apache.org/dist/hadoop/common
+
+RUN apt-get update && \
+  apt-get install -y wget
+
+# add spark-without-hadoop
+# if scala 2.11 append version in name
+RUN mkdir -p ${SPARK_HOME} && \
+  export SCALA_VERSION_STRING=$(if [ "$SCALA_VERSION" = "2.11" ]; then echo "" ; else echo "-scala-2.12"; fi) && \
+  wget -O spark.sha ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop${SCALA_VERSION_STRING}.tgz.sha512 && \
+  export SPARK_SHA512_SUM=$(grep -o "[A-F0-9]\{8\}" spark.sha | awk '{print}' ORS='' | tr '[:upper:]' '[:lower:]') && \
+  rm -f spark.sha && \
+  wget -O spark.tar.gz ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop${SCALA_VERSION_STRING}.tgz && \
+  echo "${SPARK_SHA512_SUM}  spark.tar.gz" | sha512sum -c - && \
+  gunzip -c spark.tar.gz | tar -xf - -C $SPARK_HOME --strip-components=1 && \
+  rm -f spark.tar.gz
+
+# add hadoop
+RUN mkdir -p ${HADOOP_HOME} && \
+  wget -O hadoop.mds ${HADOOP_CHECKSUM_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.mds && \
+  export HADOOP_SHA512_SUM=$(cat hadoop.mds | grep SHA512 -A1 | cut -d'=' -f2 | tr -d '\n' | tr -d ' ' | tr '[:upper:]' '[:lower:]') && \
+  rm -f hadoop.sha && \
+  wget -O hadoop.tar.gz ${HADOOP_DOWNLOAD_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+  echo "${HADOOP_SHA512_SUM}  hadoop.tar.gz" | sha512sum -c - && \
+  gunzip -c hadoop.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
+  rm -f hadoop.tar.gz
+
+# link hadoop to spark as per https://spark.apache.org/docs/latest/hadoop-provided.html
+RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> ${SPARK_HOME}/conf/spark-env.sh
+
+# get coursier to download the jars
+# --force-version to force some older versions as some dependencies will break spark
+# --exclude to remove libraires
+# include any additional plugins at the bottom
+RUN cd /tmp && \
+  wget -P /tmp https://git.io/coursier-cli && \
+  chmod +x /tmp/coursier-cli && \
+  /tmp/coursier-cli fetch \
+  --force-version com.fasterxml.jackson.core:jackson-databind:2.6.7.1 \
+  --force-version org.json4s:json4s-ast_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-core_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-jackson_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
+  --force-version com.google.guava:guava:14.0.1 \
+  --force-version org.slf4j:slf4j-log4j12:1.7.16 \
+  --exclude org.slf4j:slf4j-nop \
+  ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-elasticsearch-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.0
+
+# move the jars to the spark/jars path for easy resolution
+# also copy local ones for development
+RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_JARS}
+
+# symlink the latest jar so spark-submit commands remain unchanged
+RUN ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar
+
+# copy in log4j.properties config file
+COPY log4j.properties ${SPARK_HOME}/conf/log4j.properties
+
+# set workdir so bin/spark-submit works
+WORKDIR ${SPARK_HOME}
