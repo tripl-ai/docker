@@ -57,6 +57,8 @@ RUN pip install git+https://github.com/tripl-ai/nb_extension_arcexport.git
 COPY custom.css /home/jovyan/.jupyter/custom/custom.css
 # js to set code formatting for arc commmands
 COPY custom.js /home/jovyan/.jupyter/custom/custom.js
+# copy in settings to fix tabsize
+COPY notebook.json /home/jovyan/.jupyter/nbconfig
 
 # disable default save data with notebooks
 COPY scrub_output_pre_save.py /tmp/scrub_output_pre_save.py
