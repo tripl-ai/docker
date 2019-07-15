@@ -3,7 +3,6 @@ FROM openjdk:8u212-b04-jdk-slim-stretch
 # Versions
 ARG ARC_VERSION
 ARG SPARK_VERSION
-ARG SCALA_VERSION
 ARG HADOOP_VERSION
 
 # test to ensure all arguments have values then set environment variable
@@ -11,11 +10,10 @@ RUN test -n "$ARC_VERSION"
 ENV ARC_VERSION $ARC_VERSION
 RUN test -n "$SPARK_VERSION"
 ENV SPARK_VERSION $SPARK_VERSION
-RUN test -n "$SCALA_VERSION"
-ENV SCALA_VERSION $SCALA_VERSION
 RUN test -n "$HADOOP_VERSION"
 ENV HADOOP_VERSION $HADOOP_VERSION
 
+ENV SCALA_VERSION         2.12
 ENV SPARK_HOME            /opt/spark
 ENV SPARK_JARS            /opt/spark/jars
 ENV HADOOP_HOME           /opt/hadoop
@@ -28,13 +26,11 @@ RUN apt-get update && \
   apt-get install -y wget
 
 # add spark-without-hadoop
-# if scala 2.11 append version in name
 RUN mkdir -p ${SPARK_HOME} && \
-  export SCALA_VERSION_STRING=$(if [ "$SCALA_VERSION" = "2.11" ]; then echo "" ; else echo "-scala-2.12"; fi) && \
-  wget -O spark.sha ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop${SCALA_VERSION_STRING}.tgz.sha512 && \
+  wget -O spark.sha ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop-scala-2.12.tgz.sha512 && \
   export SPARK_SHA512_SUM=$(grep -o "[A-F0-9]\{8\}" spark.sha | awk '{print}' ORS='' | tr '[:upper:]' '[:lower:]') && \
   rm -f spark.sha && \
-  wget -O spark.tar.gz ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop${SCALA_VERSION_STRING}.tgz && \
+  wget -O spark.tar.gz ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop-scala-2.12.tgz && \
   echo "${SPARK_SHA512_SUM}  spark.tar.gz" | sha512sum -c - && \
   gunzip -c spark.tar.gz | tar -xf - -C $SPARK_HOME --strip-components=1 && \
   rm -f spark.tar.gz
@@ -70,9 +66,9 @@ RUN cd /tmp && \
   --force-version org.slf4j:slf4j-log4j12:1.7.16 \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
-  ai.tripl:arc-elasticsearch-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.0
 
