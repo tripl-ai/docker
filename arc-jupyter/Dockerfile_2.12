@@ -47,7 +47,7 @@ RUN mkdir -p ${SPARK_BASE} && \
 RUN mkdir -p ${HADOOP_HOME} && \
   wget -O hadoop.mds ${HADOOP_CHECKSUM_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.mds && \
   export HADOOP_SHA512_SUM=$(cat hadoop.mds | grep SHA512 -A1 | cut -d'=' -f2 | tr -d '\n' | tr -d ' ' | tr '[:upper:]' '[:lower:]') && \
-  rm -f hadoop.sha && \
+  rm -f hadoop.mds && \
   wget -O hadoop.tar.gz ${HADOOP_DOWNLOAD_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
   echo "${HADOOP_SHA512_SUM}  hadoop.tar.gz" | sha512sum -c - && \
   gunzip -c hadoop.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \

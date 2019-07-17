@@ -12,6 +12,11 @@ pool:
 steps:
 
 - script: |
+    docker login --username $(DOCKER_HUB_USERNAME) --password $(DOCKER_HUB_PASSWORD)
+  displayName: 'login to docker hub to allow push (https://hub.docker.com/u/triplai)'
+
+
+- script: |
     export VERSION=$(cat arc/version) && \
     export SCALA_VERSION=2.11 && \
     export ARC_VERSION=2.0.0 && \
@@ -66,10 +71,6 @@ steps:
     --build-arg HADOOP_VERSION \
     -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_${VERSION}
   displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_${VERSION}'
-
-- script: |
-    echo ${DOCKER_HUB_PASSWORD} | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin
-  displayName: 'login to docker hub to allow push (https://hub.docker.com/u/triplai)'
 
 - script: |
     export VERSION=$(cat arc/version) && \
