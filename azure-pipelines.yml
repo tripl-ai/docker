@@ -68,7 +68,7 @@ steps:
   displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_${VERSION}'
 
 - script: |
-    docker login --username ${DOCKER_HUB_USERNAME} --password ${DOCKER_HUB_PASSWORD}
+    echo ${DOCKER_HUB_PASSWORD} | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin
   displayName: 'login to docker hub to allow push (https://hub.docker.com/u/triplai)'
 
 - script: |
