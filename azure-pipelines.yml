@@ -16,14 +16,11 @@ steps:
   displayName: 'login to docker hub to allow push (https://hub.docker.com/u/triplai)'
 
 - script: |
-    export ARC_VERSION=2.0.0 && \
-    export ARC_JUPYTER_VERSION=1.1.0 && \
-    export SPARK_VERSION=2.4.3 && \
-    export HADOOP_VERSION=2.9.2
-
-- script: |
     export VERSION=$(cat arc/version) && \
     export SCALA_VERSION=2.11 && \
+    export ARC_VERSION=2.0.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker build . \
     -f arc/Dockerfile_${SCALA_VERSION} \
     --build-arg ARC_VERSION \
@@ -35,6 +32,9 @@ steps:
 - script: |
     export VERSION=$(cat arc/version) && \
     export SCALA_VERSION=2.12 && \
+    export ARC_VERSION=2.0.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker build . \
     -f arc/Dockerfile_${SCALA_VERSION} \
     --build-arg ARC_VERSION \
@@ -46,6 +46,9 @@ steps:
 - script: |
     export VERSION=$(cat arc-jupyter/version) && \
     export SCALA_VERSION=2.11 && \
+    export ARC_JUPYTER_VERSION=1.1.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker build . \
     -f arc-jupyter/Dockerfile_${SCALA_VERSION} \
     --build-arg ARC_JUPYTER_VERSION \
@@ -57,6 +60,9 @@ steps:
 - script: |
     export VERSION=$(cat arc-jupyter/version) && \
     export SCALA_VERSION=2.12 && \
+    export ARC_JUPYTER_VERSION=1.1.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker build . \
     -f arc-jupyter/Dockerfile_${SCALA_VERSION} \
     --build-arg ARC_JUPYTER_VERSION \
@@ -68,23 +74,35 @@ steps:
 - script: |
     export VERSION=$(cat arc/version) && \
     export SCALA_VERSION=2.11 && \
+    export ARC_VERSION=2.0.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
   displayName: 'push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_${HADOOP_VERSION}_${VERSION}'
 
 - script: |
     export VERSION=$(cat arc/version) && \
     export SCALA_VERSION=2.12 && \
+    export ARC_VERSION=2.0.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
   displayName: 'push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_${HADOOP_VERSION}_${VERSION}'  
 
 - script: |
     export VERSION=$(cat arc-jupyter/version) && \
     export SCALA_VERSION=2.11 && \
+    export ARC_JUPYTER_VERSION=1.1.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_${VERSION}
   displayName: 'push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.11_${VERSION}'  
 
 - script: |
     export VERSION=$(cat arc-jupyter/version) && \
     export SCALA_VERSION=2.12 && \
+    export ARC_JUPYTER_VERSION=1.1.0 && \
+    export SPARK_VERSION=2.4.3 && \
+    export HADOOP_VERSION=2.9.2 && \
     docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_${VERSION}
   displayName: 'push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_${VERSION}'    
