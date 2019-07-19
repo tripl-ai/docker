@@ -85,7 +85,8 @@ RUN cd /tmp && \
   mysql:mysql-connector-java:5.1.47 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.5 \  
+  org.postgresql:postgresql:42.2.6 \
+  com.amazon.redshift:redshift-jdbc42:1.2.27.1051 \
   -o arc && \
   ./arc --install --force && \
   rm /tmp/arc && \
