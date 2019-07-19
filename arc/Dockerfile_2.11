@@ -73,14 +73,12 @@ RUN cd /tmp && \
   ai.tripl:arc-elasticsearch-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
-  com.facebook.presto:presto-jdbc:0.209 \
-  com.microsoft.sqlserver:mssql-jdbc:7.2.1.jre8 \
-  mysql:mysql-connector-java:5.1.47 \
+  com.facebook.presto:presto-jdbc:0.221 \
+  com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
+  mysql:mysql-connector-java:8.0.16 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.6 \
-  com.amazon.redshift:redshift-jdbc42:1.2.27.1051
-
+  org.postgresql:postgresql:42.2.6
 
 # move the jars to the spark/jars path for easy resolution
 # also copy local ones for development
