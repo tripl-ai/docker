@@ -89,8 +89,7 @@ RUN cd /tmp && \
   -o arc && \
   ./arc --install --force 
 
-# get coursier to download additional jars to be accessed from pyspark or arc
-# include any additional plugins at the bottom
+# get coursier to download additional jars to be accessed from pyspark
 RUN /tmp/coursier-cli fetch \
   com.facebook.presto:presto-jdbc:0.221 \
   com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
