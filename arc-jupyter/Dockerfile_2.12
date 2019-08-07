@@ -94,7 +94,7 @@ RUN /tmp/coursier-cli fetch \
 
 # move the jars to the spark/jars path for easy resolution
 # also copy local ones for development
-RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_HOME}/jars && \
+RUN find /home/jovyan/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_HOME}/jars && \
   rm /tmp/arc && \
   rm /tmp/coursier-cli
 
