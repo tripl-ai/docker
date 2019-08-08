@@ -55,14 +55,35 @@ RUN mkdir -p ${HADOOP_HOME} && \
 # link hadoop to spark as per https://spark.apache.org/docs/latest/hadoop-provided.html
 RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> ${SPARK_HOME}/conf/spark-env.sh 
 
-# create symlink for Jupyter
-RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark
+# switch to the notebook user
+USER $NB_USER
 
-# download library and dependencies
-USER $NB_UID
+# get coursier to download additional jars to be accessed from pyspark
 RUN cd /tmp && \
   wget -P /tmp https://git.io/coursier-cli && \
   chmod +x /tmp/coursier-cli && \
+  /tmp/coursier-cli fetch \
+  --force-version com.fasterxml.jackson.core:jackson-databind:2.6.7.1 \
+  --force-version org.json4s:json4s-ast_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-core_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-jackson_${SCALA_VERSION}:3.5.3 \
+  --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
+  --force-version com.google.guava:guava:14.0.1 \
+  --force-version org.slf4j:slf4j-log4j12:1.7.16 \
+  --exclude org.slf4j:slf4j-nop \  
+  com.facebook.presto:presto-jdbc:0.221 \
+  com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
+  mysql:mysql-connector-java:8.0.16 \
+  org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
+  org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
+  org.postgresql:postgresql:42.2.6 
+
+# move the jars to the spark/jars path for easy resolution
+# also copy local ones for development
+RUN find /home/jovyan/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_HOME}/jars
+
+# download arc library and dependencies
+RUN cd /tmp && \
   /tmp/coursier-cli bootstrap \
   --embed-files=false \
   --force-version com.fasterxml.jackson.core:jackson-databind:2.6.7.1 \
@@ -87,22 +108,9 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.6 \  
   -o arc && \
-  ./arc --install --force 
-
-# get coursier to download additional jars to be accessed from pyspark
-RUN /tmp/coursier-cli fetch \
-  com.facebook.presto:presto-jdbc:0.221 \
-  com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
-  mysql:mysql-connector-java:8.0.16 \
-  org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
-  org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.6 
-
-# move the jars to the spark/jars path for easy resolution
-# also copy local ones for development
-RUN find /home/jovyan/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_HOME}/jars && \
+  ./arc --install --force && \
   rm /tmp/arc && \
-  rm /tmp/coursier-cli
+  rm /tmp/coursier-cli  
 
 # add Download as: Arc (.json) to jupyter notebook
 RUN pip install git+https://github.com/tripl-ai/nb_extension_arcexport.git
