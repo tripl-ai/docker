@@ -62,6 +62,9 @@ RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> $
 # create symlink for Jupyter
 RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark
 
+# remove gpg 
+RUN apt-get remove --purge gpg gpg-agent
+
 # switch to the notebook user
 USER $NB_USER
 
