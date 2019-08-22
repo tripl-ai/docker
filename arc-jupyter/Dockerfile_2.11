@@ -40,6 +40,7 @@ RUN mkdir -p ${SPARK_HOME} && \
   wget ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
   wget ${SPARK_KEYS_URL} && \
   gpg --import KEYS && \
+  echo "verify" && \
   gpg --verify spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
   gunzip -c spark-${SPARK_VERSION}-bin-without-hadoop.tgz | tar -xf - -C $SPARK_HOME --strip-components=1 && \
   rm -f spark-${SPARK_VERSION}-bin-without-hadoop.* && \
