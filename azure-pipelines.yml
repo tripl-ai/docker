@@ -9,6 +9,8 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+timeoutInMinutes: 120  
+
 variables:
   arc_version: '2.0.0'
   arc-jupyter_version: '1.3.0'
