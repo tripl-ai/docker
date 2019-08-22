@@ -60,7 +60,7 @@ RUN mkdir -p ${HADOOP_HOME} && \
 RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> ${SPARK_HOME}/conf/spark-env.sh 
 
 # remove gpg 
-RUN apt-get remove --purge gpg gpg-agent
+RUN apt-get remove -y --purge gpg gpg-agent
 
 # switch to the notebook user
 USER $NB_USER
