@@ -19,32 +19,36 @@ ENV SPARK_JARS            /opt/spark/jars
 ENV HADOOP_HOME           /opt/hadoop
 ENV SPARK_DOWNLOAD_URL    http://apache.mirror.amaze.com.au/spark
 ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
+ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
 ENV HADOOP_DOWNLOAD_URL   http://apache.mirror.amaze.com.au/hadoop/common
 ENV HADOOP_CHECKSUM_URL   https://www.apache.org/dist/hadoop/common
+ENV HADOOP_KEYS_URL       https://www.apache.org/dist/hadoop/common/KEYS
 
 RUN apt-get update && \
-  apt-get install --no-install-recommends -y wget && \
+  apt-get install --no-install-recommends -y wget gpg && \
   rm -rf /var/lib/apt/lists/*
 
 # add spark-without-hadoop
 RUN mkdir -p ${SPARK_HOME} && \
-  wget -O spark.sha ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz.sha512 && \
-  export SPARK_SHA512_SUM=$(grep -o "[A-F0-9]\{8\}" spark.sha | awk '{print}' ORS='' | tr '[:upper:]' '[:lower:]') && \
-  rm -f spark.sha && \
-  wget -O spark.tar.gz ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
-  echo "${SPARK_SHA512_SUM}  spark.tar.gz" | sha512sum -c - && \
-  gunzip -c spark.tar.gz | tar -xf - -C $SPARK_HOME --strip-components=1 && \
-  rm -f spark.tar.gz
+  wget ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
+  wget ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
+  wget ${SPARK_KEYS_URL} && \
+  gpg -import KEYS && \
+  gpg -verify spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
+  gunzip -c spark-${SPARK_VERSION}-bin-without-hadoop.tgz | tar -xf - -C $SPARK_HOME --strip-components=1 && \
+  rm -f spark-${SPARK_VERSION}-bin-without-hadoop.* && \
+  rm KEYS
 
 # add hadoop
 RUN mkdir -p ${HADOOP_HOME} && \
-  wget -O hadoop.mds ${HADOOP_CHECKSUM_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.mds && \
-  export HADOOP_SHA512_SUM=$(cat hadoop.mds | grep SHA512 -A1 | cut -d'=' -f2 | tr -d '\n' | tr -d ' ' | tr '[:upper:]' '[:lower:]') && \
-  rm -f hadoop.sha && \
-  wget -O hadoop.tar.gz ${HADOOP_DOWNLOAD_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
-  echo "${HADOOP_SHA512_SUM}  hadoop.tar.gz" | sha512sum -c - && \
-  gunzip -c hadoop.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
-  rm -f hadoop.tar.gz
+  wget ${HADOOP_DOWNLOAD_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+  wget ${HADOOP_CHECKSUM_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.asc && \
+  wget ${HADOOP_KEYS_URL} && \
+  gpg -import KEYS && \
+  gpg -verify hadoop-${HADOOP_VERSION}.tar.gz.asc && \
+  gunzip -c hadoop-${HADOOP_VERSION}.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
+  rm -f hadoop*.tar.gz* && \
+  rm KEYS
 
 # link hadoop to spark as per https://spark.apache.org/docs/latest/hadoop-provided.html
 RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> ${SPARK_HOME}/conf/spark-env.sh
