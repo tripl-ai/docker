@@ -31,7 +31,7 @@ ENV PYTHONPATH            $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-
 ENV SPARK_OPTS            --driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info
 
 RUN apt-get update && \
-  apt-get install --no-install-recommends -y openjdk-8-jre-headless ca-certificates-java wget gpg && \
+  apt-get install --no-install-recommends -y openjdk-8-jre-headless ca-certificates-java wget gpg gpg-agent && \
   rm -rf /var/lib/apt/lists/*
 
 # add spark-without-hadoop
