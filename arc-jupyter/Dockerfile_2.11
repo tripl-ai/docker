@@ -39,8 +39,8 @@ RUN mkdir -p ${SPARK_HOME} && \
   wget ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
   wget ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
   wget ${SPARK_KEYS_URL} && \
-  gpg -import KEYS && \
-  gpg -verify spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
+  gpg --import KEYS && \
+  gpg --verify spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
   gunzip -c spark-${SPARK_VERSION}-bin-without-hadoop.tgz | tar -xf - -C $SPARK_HOME --strip-components=1 && \
   rm -f spark-${SPARK_VERSION}-bin-without-hadoop.* && \
   rm KEYS
@@ -50,8 +50,8 @@ RUN mkdir -p ${HADOOP_HOME} && \
   wget ${HADOOP_DOWNLOAD_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
   wget ${HADOOP_CHECKSUM_URL}/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.asc && \
   wget ${HADOOP_KEYS_URL} && \
-  gpg -import KEYS && \
-  gpg -verify hadoop-${HADOOP_VERSION}.tar.gz.asc && \
+  gpg --import KEYS && \
+  gpg --verify hadoop-${HADOOP_VERSION}.tar.gz.asc && \
   gunzip -c hadoop-${HADOOP_VERSION}.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
   rm -f hadoop*.tar.gz* && \
   rm KEYS
