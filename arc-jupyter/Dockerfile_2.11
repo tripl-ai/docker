@@ -37,7 +37,7 @@ RUN apt-get update && \
 # add spark-without-hadoop
 RUN mkdir -p ${SPARK_HOME} && \
   wget ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
-  wget ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
+  wget ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
   wget ${SPARK_KEYS_URL} && \
   gpg -import KEYS && \
   gpg -verify spark-${SPARK_VERSION}-bin-without-hadoop.tgz.asc && \
