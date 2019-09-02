@@ -13,9 +13,9 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   variables:
-    arc_version: '2.0.0'
-    arc-jupyter_version: '1.3.0'
-    spark_version: '2.4.3'
+    arc_version: '2.0.1'
+    arc-jupyter_version: '1.4.0'
+    spark_version: '2.4.4'
 
   timeoutInMinutes: 120
   steps:

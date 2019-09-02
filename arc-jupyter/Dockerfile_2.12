@@ -106,11 +106,11 @@ RUN cd /tmp && \
   --force-version org.slf4j:slf4j-log4j12:1.7.16 \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc-jupyter_${SCALA_VERSION}:${ARC_JUPYTER_VERSION} \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.0.0 \
-  ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.1.1 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.0.1 \
+  ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.0.1 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.0.1 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.2 \
   com.facebook.presto:presto-jdbc:0.221 \
   com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
   mysql:mysql-connector-java:8.0.16 \
