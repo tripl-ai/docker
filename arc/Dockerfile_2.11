@@ -26,7 +26,7 @@ ENV HADOOP_KEYS_URL       https://www.apache.org/dist/hadoop/common/KEYS
 
 RUN apt-get update && \
   apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/security.sources.list && \
-  apt-get install --no-install-recommends -y wget gpg && \
+  apt-get install --no-install-recommends -y wget gpg gpg-agent && \
   rm -rf /var/lib/apt/lists/*
 
 # add spark-without-hadoop
