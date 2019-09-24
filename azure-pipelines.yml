@@ -17,7 +17,7 @@ jobs:
     arc-jupyter_version: '1.5.0'
     spark_version: '2.4.4'
 
-  timeoutInMinutes: 120
+  timeoutInMinutes: 300
   steps:
   - script: |
       docker login --username $(DOCKER_HUB_USERNAME) --password $(DOCKER_HUB_PASSWORD)
