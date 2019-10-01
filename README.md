@@ -41,7 +41,7 @@ To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter)
 ```bash
 export VERSION=$(cat arc-jupyter/version)
 export SCALA_VERSION=2.11
-export ARC_JUPYTER_VERSION=1.4.0
+export ARC_JUPYTER_VERSION=1.5.0
 export SPARK_VERSION=2.4.4
 export HADOOP_VERSION=2.9.2
 docker build . \
