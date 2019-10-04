@@ -33,6 +33,7 @@ div.progress-bar.arc-complete {
 div.progress-bar.arc-complete.error {
     background-color: #FF3E5F;
     background-image: linear-gradient(to bottom, #FF637D, #ED5463);
+    margin: 0;
 }
 
 div.progress-bar.arc-running {
@@ -44,4 +45,5 @@ div.progress-bar.arc-running {
 div.progress-bar.arc-running.error {
     background-color: #FFA0AF;
     background-image: linear-gradient(to bottom, #FFA3BF, #FF94A7);
+    margin: 0;
 }

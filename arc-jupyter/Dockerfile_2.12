@@ -103,7 +103,7 @@ RUN cd /tmp && \
   --force-version org.json4s:json4s-jackson_${SCALA_VERSION}:3.5.3 \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version com.google.guava:guava:14.0.1 \
-  --force-version org.slf4j:slf4j-log4j12:1.7.16 \
+  --force-version org.slf4j:slf4j-log4j12:1.7.25 \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc-jupyter_${SCALA_VERSION}:${ARC_JUPYTER_VERSION} \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
@@ -139,6 +139,10 @@ RUN pip install jupyter_contrib_nbextensions && \
   jupyter contrib nbextension install --user && \
   jupyter nbextensions_configurator disable --user && \
   jupyter nbextension enable execute_time/ExecuteTime
+
+# add the jupyterlab-git extension
+RUN pip install --upgrade jupyterlab-git && \
+  jupyter lab build
 
 # ui tweaks
 # css to maximise screen realestate
