@@ -66,6 +66,17 @@ RUN apt-get remove -y --purge gpg gpg-agent && \
 # switch to the notebook user
 USER $NB_USER
 
+# add the jupyterlab-git extension
+RUN jupyter labextension install @jupyterlab/git --no-build && \
+  jupyter labextension install @jupyterlab/hub-extension --no-build && \
+  jupyter lab build && \
+  jupyter lab clean && \
+  jlpm cache clean && \
+  npm cache clean --force && \
+  rm -rf $HOME/.node-gyp && \
+  rm -rf $HOME/.local && \
+  fix-permissions $CONDA_DIR $HOME
+
 # get coursier to download additional jars to be accessed from pyspark
 RUN cd /tmp && \
   wget -P /tmp https://git.io/coursier-cli && \
@@ -137,10 +148,6 @@ RUN pip install jupyter_contrib_nbextensions && \
   jupyter contrib nbextension install --user && \
   jupyter nbextensions_configurator disable --user && \
   jupyter nbextension enable execute_time/ExecuteTime
-
-# add the jupyterlab-git extension
-RUN pip install --upgrade jupyterlab-git && \
-  jupyter lab build
 
 # ui tweaks
 # css to maximise screen realestate
