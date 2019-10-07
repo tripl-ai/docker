@@ -17,7 +17,7 @@ jobs:
     arc-jupyter_version: '1.6.1'
     spark_version: '2.4.4'
 
-  timeoutInMinutes: 300
+  timeoutInMinutes: 360
   steps:
   - script: |
       docker login --username $(DOCKER_HUB_USERNAME) --password $(DOCKER_HUB_PASSWORD)
@@ -29,12 +29,15 @@ jobs:
       export ARC_VERSION=$(arc_version) && \
       export SPARK_VERSION=$(spark_version) && \
       export HADOOP_VERSION=2.9.2 && \
-      docker build . \
-      -f arc/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      DOCKER_CLI_EXPERIMENTAL=enabled if !docker manifest inspect triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} > /dev/null; then 
+        docker build . \
+          -f arc/Dockerfile_${SCALA_VERSION} \
+          --build-arg ARC_VERSION \
+          --build-arg SPARK_VERSION \
+          --build-arg HADOOP_VERSION \
+          -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+        docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      fi
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.9.2_${VERSION}'
 
   - script: |
@@ -43,12 +46,15 @@ jobs:
       export ARC_VERSION=$(arc_version) && \
       export SPARK_VERSION=$(spark_version) && \
       export HADOOP_VERSION=2.9.2 && \
-      docker build . \
-      -f arc/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      DOCKER_CLI_EXPERIMENTAL=enabled if !docker manifest inspect triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} > /dev/null; then 
+        docker build . \
+          -f arc/Dockerfile_${SCALA_VERSION} \
+          --build-arg ARC_VERSION \
+          --build-arg SPARK_VERSION \
+          --build-arg HADOOP_VERSION \
+          -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+        docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      fi  
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_2.9.2_${VERSION}'
 
   - script: |
@@ -57,12 +63,15 @@ jobs:
       export ARC_VERSION=$(arc_version) && \
       export SPARK_VERSION=$(spark_version) && \
       export HADOOP_VERSION=2.7.7 && \
-      docker build . \
-      -f arc/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      DOCKER_CLI_EXPERIMENTAL=enabled if !docker manifest inspect triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} > /dev/null; then 
+        docker build . \
+          -f arc/Dockerfile_${SCALA_VERSION} \
+          --build-arg ARC_VERSION \
+          --build-arg SPARK_VERSION \
+          --build-arg HADOOP_VERSION \
+          -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+        docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      fi    
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.7.7_${VERSION}'
 
   - script: |
@@ -71,12 +80,15 @@ jobs:
       export ARC_VERSION=$(arc_version) && \
       export SPARK_VERSION=$(spark_version) && \
       export HADOOP_VERSION=2.7.7 && \
-      docker build . \
-      -f arc/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      DOCKER_CLI_EXPERIMENTAL=enabled if !docker manifest inspect triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} > /dev/null; then 
+        docker build . \
+          -f arc/Dockerfile_${SCALA_VERSION} \
+          --build-arg ARC_VERSION \
+          --build-arg SPARK_VERSION \
+          --build-arg HADOOP_VERSION \
+          -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+        docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+      fi  
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_2.7.7_${VERSION}'
 
   - script: |
@@ -134,42 +146,6 @@ jobs:
       --build-arg HADOOP_VERSION \
       -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_hadoop_2.7.7_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.11 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.9.2 && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
-    displayName: 'push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.9.2_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.12 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.9.2 && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
-    displayName: 'push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_2.9.2_${VERSION}'  
-
-  - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.11 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.7.7 && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
-    displayName: 'push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.7.7_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.12 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.7.7 && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
-    displayName: 'push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_2.7.7_${VERSION}'  
 
   - script: |
       export VERSION=$(cat arc-jupyter/version) && \
