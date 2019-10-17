@@ -33,7 +33,7 @@ ENV SPARK_OPTS            --driver-java-options=-Xms1024M --driver-java-options=
 RUN apt-get update && \
   apt-get install --no-install-recommends -y openjdk-8-jre-headless ca-certificates-java wget gpg gpg-agent && \
   rm -rf /var/lib/apt/lists/*
-  
+
 # add spark-without-hadoop
 RUN mkdir -p ${SPARK_HOME} && \
   wget ${SPARK_DOWNLOAD_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
@@ -57,9 +57,9 @@ RUN mkdir -p ${HADOOP_HOME} && \
   rm KEYS
 
 # link hadoop to spark as per https://spark.apache.org/docs/latest/hadoop-provided.html
-RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> ${SPARK_HOME}/conf/spark-env.sh 
+RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> ${SPARK_HOME}/conf/spark-env.sh
 
-# remove gpg 
+# remove gpg
 RUN apt-get remove -y --purge gpg gpg-agent && \
   rm -r /home/jovyan/.gnupg
 
@@ -90,13 +90,13 @@ RUN cd /tmp && \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version com.google.guava:guava:14.0.1 \
   --force-version org.slf4j:slf4j-log4j12:1.7.16 \
-  --exclude org.slf4j:slf4j-nop \  
-  com.facebook.presto:presto-jdbc:0.221 \
-  com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
-  mysql:mysql-connector-java:8.0.16 \
+  --exclude org.slf4j:slf4j-nop \
+  com.facebook.presto:presto-jdbc:0.226 \
+  com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8 \
+  mysql:mysql-connector-java:8.0.17 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.6 
+  org.postgresql:postgresql:42.2.8
 
 # move the jars to the spark/jars path for easy resolution
 # also copy local ones for development
@@ -116,22 +116,22 @@ RUN cd /tmp && \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc-jupyter_${SCALA_VERSION}:${ARC_JUPYTER_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.0.2 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.0.1 \
   ai.tripl:arc-elasticsearch-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.0.1 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.2 \
   org.apache.spark:spark-avro_${SCALA_VERSION}:${SPARK_VERSION} \
-  com.facebook.presto:presto-jdbc:0.221 \
-  com.microsoft.sqlserver:mssql-jdbc:7.2.2.jre8 \
-  mysql:mysql-connector-java:8.0.16 \
+  com.facebook.presto:presto-jdbc:0.226 \
+  com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8 \
+  mysql:mysql-connector-java:8.0.17 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.6 \  
+  org.postgresql:postgresql:42.2.8 \
   -o arc && \
   ./arc --install --force && \
   rm /tmp/arc && \
-  rm /tmp/coursier-cli  
+  rm /tmp/coursier-cli
 
 # add Download as: Arc (.json) to jupyter notebook
 RUN pip install git+https://github.com/tripl-ai/nb_extension_arcexport.git
