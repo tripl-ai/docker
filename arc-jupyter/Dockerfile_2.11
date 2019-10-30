@@ -96,7 +96,8 @@ RUN cd /tmp && \
   mysql:mysql-connector-java:8.0.17 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.8
+  org.postgresql:postgresql:42.2.8 \
+  com.amazon.redshift:redshift-jdbc42:1.2.27.1051
 
 # move the jars to the spark/jars path for easy resolution
 # also copy local ones for development
@@ -128,6 +129,7 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
+  com.amazon.redshift:redshift-jdbc42:1.2.27.1051 \
   -o arc && \
   ./arc --install --force && \
   rm /tmp/arc && \
