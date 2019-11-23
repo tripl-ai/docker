@@ -48,7 +48,7 @@ RUN mkdir -p ${HADOOP_HOME} && \
   gpg --import KEYS && \
   gpg --verify hadoop-${HADOOP_VERSION}.tar.gz.asc && \
   gunzip -c hadoop-${HADOOP_VERSION}.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
-  rm ${HADOOP_HOME}/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar && \
+  rm -f ${HADOOP_HOME}/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar && \
   rm -f hadoop*.tar.gz* && \
   rm KEYS
 
