@@ -13,6 +13,7 @@ This is a working document and will be updated as more plugins are built and/or 
 | [arc-graph-pipeline-plugin](https://github.com/tripl-ai/arc-graph-pipeline-plugin)                  |                     | ✔                       | https://github.com/opencypher/morpheus/issues/917               |
 | [arc-kafka-pipeline-plugin](https://github.com/tripl-ai/arc-kafka-pipeline-plugin)                  | ✔                   | ✔                       |                                                                 |
 | [arc-mongodb-pipeline-plugin](https://github.com/tripl-ai/arc-mongodb-pipeline-plugin)              | ✔                   | ✔                       |                                                                 |
+| [arc-sas-pipeline-plugin](https://github.com/tripl-ai/arc-sas-pipeline-plugin)                      | ✔                   | ✔                       |                                                                 |
 
 ## Building
 
@@ -23,7 +24,7 @@ To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala
 ```bash
 export VERSION=$(cat arc/version)
 export SCALA_VERSION=2.11
-export ARC_VERSION=2.3.0
+export ARC_VERSION=2.4.0
 export SPARK_VERSION=2.4.4
 export HADOOP_VERSION=2.9.2
 docker build . \
@@ -41,7 +42,7 @@ To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter)
 ```bash
 export VERSION=$(cat arc-jupyter/version)
 export SCALA_VERSION=2.11
-export ARC_JUPYTER_VERSION=1.7.0
+export ARC_JUPYTER_VERSION=1.8.0
 export SPARK_VERSION=2.4.4
 export HADOOP_VERSION=2.9.2
 docker build . \

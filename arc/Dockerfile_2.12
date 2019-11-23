@@ -48,6 +48,7 @@ RUN mkdir -p ${HADOOP_HOME} && \
   gpg --import KEYS && \
   gpg --verify hadoop-${HADOOP_VERSION}.tar.gz.asc && \
   gunzip -c hadoop-${HADOOP_VERSION}.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
+  rm ${HADOOP_HOME}/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar && \
   rm -f hadoop*.tar.gz* && \
   rm KEYS
 
@@ -62,6 +63,11 @@ RUN cd /tmp && \
   wget -P /tmp https://git.io/coursier-cli && \
   chmod +x /tmp/coursier-cli && \
   /tmp/coursier-cli fetch \
+  --no-default \
+  --repository ivy2Local \
+  --repository central \
+  --repository sonatype:snapshots \
+  --repository https://repository.mulesoft.org/nexus/content/repositories/public \    
   --force-version com.fasterxml.jackson.core:jackson-databind:2.6.7.1 \
   --force-version org.json4s:json4s-ast_${SCALA_VERSION}:3.5.3 \
   --force-version org.json4s:json4s-core_${SCALA_VERSION}:3.5.3 \
@@ -77,13 +83,15 @@ RUN cd /tmp && \
   ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.0.1 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.0.2 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
   com.facebook.presto:presto-jdbc:0.226 \
   com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8 \
   mysql:mysql-connector-java:8.0.17 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
-  com.amazon.redshift:redshift-jdbc42:1.2.27.1051
+  com.amazon.redshift:redshift-jdbc42:1.2.34.1058 \
+  com.oracle.ojdbc:ojdbc8:19.3.0.0
 
 # move the jars to the spark/jars path for easy resolution
 # also copy local ones for development
