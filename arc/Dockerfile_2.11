@@ -59,6 +59,7 @@ RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> $
 # --force-version to force some older versions as some dependencies will break spark
 # --exclude to remove libraires
 # include any additional plugins at the bottom
+# org.slf4j:slf4j-log4j12 is embedded inside com.amazon.redshift:redshift-jdbc42
 RUN cd /tmp && \
   wget -P /tmp https://git.io/coursier-cli && \
   chmod +x /tmp/coursier-cli && \
@@ -67,7 +68,7 @@ RUN cd /tmp && \
   --repository ivy2Local \
   --repository central \
   --repository sonatype:snapshots \
-  --repository https://repository.mulesoft.org/nexus/content/repositories/public \   
+  --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --force-version com.fasterxml.jackson.core:jackson-databind:2.6.7.1 \
   --force-version org.json4s:json4s-ast_${SCALA_VERSION}:3.5.3 \
   --force-version org.json4s:json4s-core_${SCALA_VERSION}:3.5.3 \
