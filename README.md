@@ -6,7 +6,7 @@ This is a working document and will be updated as more plugins are built and/or 
 
 | Plugin                                                                                              | Scala 2.11          | Scala 2.12              | Notes                                                           |
 |-----------------------------------------------------------------------------------------------------|---------------------|-------------------------|-----------------------------------------------------------------|
-| [arc-cassandra-pipeline-plugin](https://github.com/tripl-ai/arc-cassandra-pipeline-plugin)          | ✔                   |                         | https://github.com/datastax/spark-cassandra-connector/pull/1216 |
+| [arc-cassandra-pipeline-plugin](https://github.com/tripl-ai/arc-cassandra-pipeline-plugin)          | ✔                   | ✔                       |                                                                 |
 | [arc-deltalake-pipeline-plugin](https://github.com/tripl-ai/arc-deltalake-pipeline-plugin)          | ✔                   | ✔                       |                                                                 |
 | [arc-deltaperiod-config-plugin](https://github.com/tripl-ai/arc-deltaperiod-config-plugin)          | ✔                   | ✔                       |                                                                 |
 | [arc-elasticsearch-pipeline-plugin](https://github.com/tripl-ai/arc-elasticsearch-pipeline-plugin)  | ✔                   |                         | https://github.com/elastic/elasticsearch-hadoop/issues/1224     |
@@ -42,7 +42,7 @@ To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter)
 ```bash
 export VERSION=$(cat arc-jupyter/version)
 export SCALA_VERSION=2.11
-export ARC_JUPYTER_VERSION=1.8.0
+export ARC_JUPYTER_VERSION=1.9.0
 export SPARK_VERSION=2.4.4
 export HADOOP_VERSION=2.9.2
 docker build . \
