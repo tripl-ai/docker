@@ -13,7 +13,7 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   variables:
-    arc_version: '2.5.0'
+    arc_version: '2.6.0'
     arc-jupyter_version: '1.9.3'
     spark_version: '2.4.4'
 
