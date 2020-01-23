@@ -83,7 +83,6 @@ RUN pip install mlflow jupyterlab jupyterlab-git && \
   fix-permissions $CONDA_DIR $HOME
 
 # get coursier to download additional jars to be accessed from pyspark
-# org.slf4j:slf4j-log4j12 is embedded inside com.amazon.redshift:redshift-jdbc42
 RUN cd /tmp && \
   wget -P /tmp https://git.io/coursier-cli && \
   chmod +x /tmp/coursier-cli && \
@@ -99,7 +98,6 @@ RUN cd /tmp && \
   --force-version org.json4s:json4s-jackson_${SCALA_VERSION}:3.5.3 \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version com.google.guava:guava:14.0.1 \
-  --exclude org.slf4j:slf4j-log4j12 \
   --exclude org.slf4j:slf4j-nop \
   com.facebook.presto:presto-jdbc:0.226 \
   com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8 \
@@ -107,7 +105,6 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
-  com.amazon.redshift:redshift-jdbc42:1.2.34.1058 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   io.delta:delta-core_${SCALA_VERSION}:0.4.0
 
@@ -116,7 +113,6 @@ RUN cd /tmp && \
 RUN find /home/jovyan/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_HOME}/jars
 
 # download arc library and dependencies
-# org.slf4j:slf4j-log4j12 is embedded inside com.amazon.redshift:redshift-jdbc42
 RUN cd /tmp && \
   /tmp/coursier-cli bootstrap \
   --no-default \
@@ -131,7 +127,6 @@ RUN cd /tmp && \
   --force-version org.json4s:json4s-jackson_${SCALA_VERSION}:3.5.3 \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version com.google.guava:guava:14.0.1 \
-  --exclude org.slf4j:slf4j-log4j12 \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc-jupyter_${SCALA_VERSION}:${ARC_JUPYTER_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
@@ -149,7 +144,6 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
-  com.amazon.redshift:redshift-jdbc42:1.2.34.1058 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   -o arc && \
   ./arc --install --force && \

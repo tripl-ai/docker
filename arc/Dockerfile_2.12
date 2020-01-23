@@ -59,7 +59,6 @@ RUN echo "export SPARK_DIST_CLASSPATH=\$(/opt/hadoop/bin/hadoop classpath)" >> $
 # --force-version to force some older versions as some dependencies will break spark
 # --exclude to remove libraires
 # include any additional plugins at the bottom
-# org.slf4j:slf4j-log4j12 is embedded inside com.amazon.redshift:redshift-jdbc42
 RUN cd /tmp && \
   wget -P /tmp https://git.io/coursier-cli && \
   chmod +x /tmp/coursier-cli && \
@@ -76,7 +75,6 @@ RUN cd /tmp && \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version com.google.guava:guava:14.0.1 \
-  --exclude org.slf4j:slf4j-log4j12 \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
@@ -93,7 +91,6 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
-  com.amazon.redshift:redshift-jdbc42:1.2.34.1058 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0
 
 # move the jars to the spark/jars path for easy resolution
