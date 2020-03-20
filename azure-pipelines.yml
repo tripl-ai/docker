@@ -69,7 +69,6 @@ jobs:
         -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
       docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
       docker rmi --force $(docker images -q triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-      fi
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.7.7_${VERSION}'
 
   - script: |
