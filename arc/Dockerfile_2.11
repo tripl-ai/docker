@@ -77,6 +77,7 @@ RUN cd /tmp && \
   --force-version org.json4s:json4s-scalap_${SCALA_VERSION}:3.5.3 \
   --force-version com.google.guava:guava:14.0.1 \
   --exclude org.slf4j:slf4j-nop \
+  --exclude com.google.collections:google-collections \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.2.0 \
@@ -92,12 +93,11 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
-  com.oracle.ojdbc:ojdbc8:19.3.0.0
+  com.oracle.ojdbc:ojdbc8:19.3.0.0 && \
+  rm -rf /root/.cache  
 
 # move the jars to the spark/jars path for easy resolution
-RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_JARS} && \
-  find / -name "google-collections*.jar" | xargs rm && \
-  rm -rf /root/.cache
+RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_JARS}
 
 # symlink the latest jar so spark-submit commands remain unchanged
 RUN ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar
