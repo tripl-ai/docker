@@ -151,9 +151,8 @@ RUN cd /tmp && \
   -o arc && \
   ./arc --install --force && \
   rm /tmp/arc && \
-  rm /tmp/coursier-cli && \
-  rm -rf /home/jovyan/.cache
-
+  rm /tmp/coursier-cli
+  
 # add Download as: Arc (.json) to jupyter notebook
 RUN pip install git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.2
 
