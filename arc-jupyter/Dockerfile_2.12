@@ -53,8 +53,8 @@ RUN mkdir -p ${HADOOP_HOME} && \
   gpg --import KEYS && \
   gpg --verify hadoop-${HADOOP_VERSION}.tar.gz.asc && \
   gunzip -c hadoop-${HADOOP_VERSION}.tar.gz | tar -xf - -C $HADOOP_HOME --strip-components=1 && \
-  rm -f ${HADOOP_HOME}/share/hadoop/common/lib/slf4j-log4j12-*.jar && \
-  rm -f ${HADOOP_HOME}/share/hadoop/common/lib/guava-*.jar && \
+  find /opt/hadoop -name "slf4j-log4j12-*.jar" | xargs rm && \
+  find /opt/hadoop -name "guava-*.jar" | xargs rm && \
   rm -f hadoop*.tar.gz* && \
   rm KEYS
 
