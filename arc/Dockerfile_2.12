@@ -95,8 +95,9 @@ RUN cd /tmp && \
   com.oracle.ojdbc:ojdbc8:19.3.0.0
 
 # move the jars to the spark/jars path for easy resolution
-# also copy local ones for development
-RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_JARS}
+RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_JARS} && \
+  find / -name "google-collections*.jar" | xargs rm && \
+  rm -rf /root/.cache
 
 # symlink the latest jar so spark-submit commands remain unchanged
 RUN ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar
