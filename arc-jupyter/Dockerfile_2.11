@@ -105,10 +105,10 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
-  io.delta:delta-core_${SCALA_VERSION}:0.4.0
+  com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
+  io.delta:delta-core_${SCALA_VERSION}:0.5.0
 
 # move the jars to the spark/jars path for easy resolution
-# also copy local ones for development
 RUN find /home/jovyan/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_HOME}/jars
 
 # download arc library and dependencies
@@ -145,6 +145,7 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
+  com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
   -o arc && \
   ./arc --install --force && \
   rm /tmp/arc && \

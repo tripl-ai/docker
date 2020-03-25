@@ -93,7 +93,8 @@ RUN cd /tmp && \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   org.postgresql:postgresql:42.2.8 \
-  com.oracle.ojdbc:ojdbc8:19.3.0.0
+  com.oracle.ojdbc:ojdbc8:19.3.0.0 \
+  com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2
 
 # move the jars to the spark/jars path for easy resolution
 RUN find /root/.cache/coursier -name "*.jar" -print0 | xargs -0 -I {} mv {} ${SPARK_JARS} && \
