@@ -19,10 +19,10 @@ ENV SCALA_VERSION         2.11
 ENV SPARK_HOME            /usr/local/spark
 ENV HADOOP_HOME           /opt/hadoop
 ENV JAVA_HOME             /usr
-ENV SPARK_DOWNLOAD_URL    http://apache.mirror.amaze.com.au/spark
+ENV SPARK_DOWNLOAD_URL    https://downloads.apache.org/spark
 ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
 ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
-ENV HADOOP_DOWNLOAD_URL   http://apache.mirror.amaze.com.au/hadoop/common
+ENV HADOOP_DOWNLOAD_URL   https://downloads.apache.org/hadoop/common
 ENV HADOOP_CHECKSUM_URL   https://www.apache.org/dist/hadoop/common
 ENV HADOOP_KEYS_URL       https://www.apache.org/dist/hadoop/common/KEYS
 ENV JAVA_OPTS             "-Xmx1g"
