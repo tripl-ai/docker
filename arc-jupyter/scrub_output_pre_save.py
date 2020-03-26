@@ -10,9 +10,19 @@ def scrub_output_pre_save(model, **kwargs):
         return
 
     # only run for arc kernel
+    if not 'metadata' in model['content']:
+        return
+
+    if not 'kernelspec' in model['content']['metadata']:
+        return
+
+    if not 'name' in model['content']['metadata']['kernelspec']:
+        return
+
     if model['content']['metadata']['kernelspec']['name'] != 'arc':
         return
 
+    # clear all cell_type=code cells
     for cell in model['content']['cells']:
         if cell['cell_type'] != 'code':
             continue
