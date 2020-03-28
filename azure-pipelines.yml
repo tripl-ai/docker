@@ -16,6 +16,9 @@ jobs:
     arc_version: '2.8.1'
     arc-jupyter_version: '2.0.3'
     spark_version: '2.4.5'
+    alpine_version: '3.11.5'
+    python_version: '3.8.2-alpine3.11'
+    boto3_version: '1.12.31'
 
   timeoutInMinutes: 360
   steps:
@@ -150,3 +153,25 @@ jobs:
       docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
       docker rmi --force $(docker images -q triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_hadoop_2.7.7_${VERSION}'
+
+  - script: |
+      export PYTHON_VERSION=$(python_version) && \
+      export BOTO3_VERSION=$(boto3_version) && \
+      docker build . \
+      -f python-boto3/Dockerfile \
+      --build-arg PYTHON_VERSION \
+      --build-arg BOTO3_VERSION \
+      -t triplai/python-boto3:python_${PYTHON_VERSION}_boto3_${BOTO3_VERSION} && \
+      docker push triplai/python-boto3:python_${PYTHON_VERSION}_boto3_${BOTO3_VERSION} && \
+      docker rmi --force $(docker images -q triplai/python-boto3:python_${PYTHON_VERSION}_boto3_${BOTO3_VERSION})
+    displayName: 'build triplai/python-boto3:python_${PYTHON_VERSION}_boto3_${BOTO3_VERSION}'
+
+  - script: |
+      export ALPINE_VERSION=$(alpine_version) && \
+      docker build . \
+      -f alpine-ssh/Dockerfile \
+      --build-arg ALPINE_VERSION \
+      -t triplai/alpine-ssh:${ALPINE_VERSION} && \
+      docker push triplai/alpine-ssh:${ALPINE_VERSION} && \
+      docker rmi --force $(docker images -q triplai/alpine-ssh:${ALPINE_VERSION})
+    displayName: 'build triplai/alpine-ssh:${ALPINE_VERSION}'
