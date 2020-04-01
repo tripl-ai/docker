@@ -17,8 +17,25 @@ ENV PATH                  $PATH:$SPARK_HOME/bin
 
 COPY arc-jupyter/2.1.0 /root/.ivy2/local/ai.tripl/arc-jupyter_2.12/2.1.0
 
+# add user
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
+  mkdir -p /home/$NB_USER/.jupyter && \
+  mkdir -p /home/$NB_USER/.local
+
 # disable default save data with notebooks
 COPY arc-jupyter/scrub_output_pre_save.py /tmp/scrub_output_pre_save.py
+
+# ui tweaks
+COPY arc-jupyter/custom.js /root/.jupyter/custom/custom.js
+COPY arc-jupyter/custom.css /root/.jupyter/custom/custom.css
+COPY arc-jupyter/notebook.json /root/.jupyter/nbconfig
+
+# add the kernel to start arc
+COPY arc-jupyter/kernel.json /root/.local/share/jupyter/kernels/arc/kernel.json
+
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN apt-get update && \
@@ -31,6 +48,8 @@ RUN apt-get update && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \
   jupyter notebook --generate-config && \
   cat /tmp/scrub_output_pre_save.py >> /root/.jupyter/jupyter_notebook_config.py && \
+  cp -r /root/.jupyter/* /home/jovyan/.jupyter && \
+  cp -r /root/.local/* /home/jovyan/.local && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download cousier and dependencies" && \
@@ -61,23 +80,9 @@ RUN apt-get update && \
   rm -rf /root/.cache && \
   rm -rf /tmp/*
 
-ARG NB_USER="jovyan"
-ARG NB_UID="1000"
-ARG NB_GID="100"
-
-RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
-WORKDIR /home/$NB_USER
-
-
-# add the kernel to start arc
-COPY arc-jupyter/kernel.json /home/$NB_USER/.local/share/jupyter/kernels/arc/kernel.json
-
-# ui tweaks
-COPY arc-jupyter/custom.js /home/$NB_USER/.jupyter/custom/custom.js
-COPY arc-jupyter/custom.css /home/$NB_USER/.jupyter/custom/custom.css
-COPY arc-jupyter/notebook.json /home/$NB_USER/.jupyter/nbconfig
-
 RUN chown -R $NB_USER:users /home/$NB_USER
 USER $NB_USER
+
+WORKDIR /home/$NB_USER
 
 ENTRYPOINT jupyter notebook --ip=0.0.0.0 --no-browser --NotebookApp.password='' --NotebookApp.token=''
