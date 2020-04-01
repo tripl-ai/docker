@@ -6,6 +6,6 @@
     "/usr/bin/env",
     "sh",
     "-c",
-    "java $JAVA_OPTS $BASE_JAVA_OPTS -jar $(jupyter --data-dir)/kernels/arc/launcher.jar --connection-file {connection_file}"
+    "java -cp $(echo $SPARK_JARS/*.jar | tr ' ' ':') $JAVA_OPTS $BASE_JAVA_OPTS ai.tripl.arc.jupyter.ArcKernel --connection-file {connection_file}"
   ]
 }
