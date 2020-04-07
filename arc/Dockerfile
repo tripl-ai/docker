@@ -83,7 +83,7 @@ RUN \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
-  ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}.jar ${SPARK_JARS}/arc.jar && \
+  ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   echo "cleaning up" && \
   # spark
   rm -rf ${SPARK_HOME}/examples \
