@@ -105,7 +105,7 @@ COPY arc/log4j.properties ${SPARK_HOME}/conf/log4j.properties
 
 # override entrypoint
 # original: ENTRYPOINT [ "/opt/entrypoint.sh" ]
-ENTRYPOINT /bin/bash
+ENTRYPOINT []
 
 # set workdir so bin/spark-submit works
 WORKDIR ${SPARK_HOME}
