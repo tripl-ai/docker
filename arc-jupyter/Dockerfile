@@ -1,4 +1,5 @@
-FROM triplai/arc:arc_2.8.1_spark_2.4.5_scala_2.12_hadoop_2.9.2_1.0.0
+ARG FROM_IMAGE
+FROM $FROM_IMAGE
 
 # Versions
 ARG ARC_JUPYTER_VERSION
@@ -15,8 +16,6 @@ ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
 ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
 ENV PATH                  $PATH:$SPARK_HOME/bin
 
-COPY arc-jupyter/2.1.0 /root/.ivy2/local/ai.tripl/arc-jupyter_2.12/2.1.0
-
 # add user
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
@@ -31,7 +30,7 @@ COPY arc-jupyter/scrub_output_pre_save.py /tmp/scrub_output_pre_save.py
 # ui tweaks
 COPY arc-jupyter/custom.js /root/.jupyter/custom/custom.js
 COPY arc-jupyter/custom.css /root/.jupyter/custom/custom.css
-COPY arc-jupyter/notebook.json /root/.jupyter/nbconfig
+COPY arc-jupyter/notebook.json /root/.jupyter/nbconfig/notebook.json
 
 # add the kernel to start arc
 COPY arc-jupyter/kernel.json /root/.local/share/jupyter/kernels/arc/kernel.json
@@ -42,7 +41,7 @@ RUN apt-get update && \
   apt-get install --no-install-recommends -y python3-pip git wget && \
   echo "install jupyter and dependencies" && \
   pip3 install --upgrade pip setuptools && \
-  pip3 install jupyter pandas numpy scipy pyarrow jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.2 && \
+  pip3 install jupyter pandas numpy scipy pyarrow jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.3 && \
   jupyter contrib nbextension install --system && \
   jupyter nbextensions_configurator disable --system && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \

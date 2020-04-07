@@ -17,22 +17,30 @@ This is a working document and will be updated as more plugins are built and/or 
 
 ## Building
 
+These images use the offical `spark-rm` image with a slightly modified Dockerfile to fix defects. This allows the official Spark releases to be compled and packaged.
+
+Then the official Spark `k8s` Dockerfile is used to built a generic Spark image. Both images below then use that image as their base.
+
 ### Build arc
 
 To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
 
 ```bash
 export VERSION=$(cat arc/version)
-export SCALA_VERSION=2.11
-export ARC_VERSION=2.4.0
-export SPARK_VERSION=2.4.4
+export ARC_VERSION=2.9.0
+export SPARK_VERSION=2.4.5
+export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
+export ARC_JUPYTER_VERSION=2.1.1
+
+export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
 docker build . \
--f arc/Dockerfile_${SCALA_VERSION} \
---build-arg ARC_VERSION \
---build-arg SPARK_VERSION \
---build-arg HADOOP_VERSION \
--t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+  -f arc/Dockerfile \
+  --build-arg FROM_IMAGE \
+  --build-arg ARC_VERSION \
+  --build-arg SPARK_VERSION \
+  --build-arg HADOOP_VERSION \
+  -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
 ```
 
 ### Build arc-jupyter
@@ -41,16 +49,18 @@ To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter)
 
 ```bash
 export VERSION=$(cat arc-jupyter/version)
-export SCALA_VERSION=2.11
-export ARC_JUPYTER_VERSION=1.9.0
-export SPARK_VERSION=2.4.4
+export ARC_VERSION=2.9.0
+export SPARK_VERSION=2.4.5
+export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
+export ARC_JUPYTER_VERSION=2.1.1
+
+export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
 docker build . \
--f arc-jupyter/Dockerfile_${SCALA_VERSION} \
+-f arc-jupyter/Dockerfile \
+--build-arg FROM_IMAGE \
 --build-arg ARC_JUPYTER_VERSION \
---build-arg SPARK_VERSION \
---build-arg HADOOP_VERSION \
--t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_${VERSION}
+-t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}  
 ```
 
 ## Authors/Contributors

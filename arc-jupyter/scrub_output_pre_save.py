@@ -1,6 +1,8 @@
-
 def scrub_output_pre_save(model, **kwargs):
     """scrub output before saving notebooks"""
+
+    import os
+
     # only run on notebooks
     if model['type'] != 'notebook':
         return
@@ -21,6 +23,11 @@ def scrub_output_pre_save(model, **kwargs):
 
     if model['content']['metadata']['kernelspec']['name'] != 'arc':
         return
+
+    # allow save data override which is useful for preparing examples
+    if 'JUPYTER_SAVE_OUTPUT' in os.environ:
+        if os.environ['JUPYTER_SAVE_OUTPUT'].lower() == 'true':
+            return
 
     # clear all cell_type=code cells
     for cell in model['content']['cells']:

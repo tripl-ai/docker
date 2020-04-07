@@ -1,5 +1,3 @@
-# sed -i.bak 's/<profiles>/<profiles><profile><id>hadoop-2.9<\/id><properties><hadoop.version>2.9.2<\/hadoop.version><curator.version>2.7.1<\/curator.version><\/properties><\/profile>/g' pom.xml
-
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with

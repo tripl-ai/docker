@@ -13,162 +13,104 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   variables:
-    arc_version: '2.8.1'
-    arc-jupyter_version: '2.0.3'
+    arc_version: '2.9.0'
+    arc-jupyter_version: '2.1.1'
     spark_version: '2.4.5'
+    hadoop_version: '2.9.2'
+    scala_version: '2.12'
+    spark_checksum_url: 'https://www.apache.org/dist/spark'
+    spark_keys_url: 'https://www.apache.org/dist/spark/KEYS'
 
-  timeoutInMinutes: 360
+  timeoutInMinutes: 720
   steps:
   - script: |
       docker login --username $(DOCKER_HUB_USERNAME) --password $(DOCKER_HUB_PASSWORD)
     displayName: 'login to docker hub to allow push (https://hub.docker.com/u/triplai)'
 
+  # build images uncomment to build
 
-  - script: |
-    docker run \
-    -it \
-    -v $(pwd):/src \
-    -e MAVEN_OPTS="-Xmx4g -XX:ReservedCodeCacheSize=2g" \
-    -w /src \
-    triplai/spark-rm:latest \
-    ./dev/make-distribution.sh  \
-    --pip \
-    --r \
-    --tgz \
-    -Psparkr \
-    -Phadoop-2.7 \
-    -Phive \
-    -Phive-thriftserver \
-    -Pmesos \
-    -Pyarn \
-    -Pkubernetes \
-    -Phadoop-2.9.2 \
-    -Pscala-2.12
+  # this script builds the spark-rm image which has python and r configured correctly to compile spark
+  # - script: |
+  #     docker build -f spark-rm/Dockerfile . -t triplai/spark-rm:latest
+  #   displayName: 'build the spark release manager image (triplai/spark-rm:latest) for compiling spark'    
 
+  # this script downloads the spark source code for ${SPARK_VERSION}, compiles it then builds and pushes k8s images to dockerhub
+  # - script: |
+  #     export SPARK_VERSION=$(spark_version)
+  #     export HADOOP_VERSION=$(hadoop_version)
+  #     export SCALA_VERSION=$(scala_version)
+  #     export SPARK_CHECKSUM_URL=$(spark_checksum_url)
+  #     export SPARK_KEYS_URL=$(spark_keys_url)
+
+  #     wget -P /tmp $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz\?as_json | \
+  #     python3 -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
+  #     wget -P /tmp ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz.asc && \
+  #     wget -P /tmp ${SPARK_KEYS_URL} && \
+  #     gpg --import /tmp/KEYS && \
+  #     gpg --verify /tmp/spark-${SPARK_VERSION}.tgz.asc && \
+  #     mkdir -p /tmp/spark && \
+  #     tar -xvf /tmp/spark-${SPARK_VERSION}.tgz -C /tmp/spark --strip-components=1
+
+  #     # add hadoop build profile
+  #     sed -i.bak 's/<profiles>/<profiles><profile><id>hadoop-'${HADOOP_VERSION}'<\/id><properties><hadoop.version>'${HADOOP_VERSION}'<\/hadoop.version><curator.version>2.7.1<\/curator.version><\/properties><\/profile>/g' /tmp/spark/pom.xml
+
+  #     docker run \
+  #     -it \
+  #     -v /tmp/spark:/src \
+  #     -e MAVEN_OPTS="-Xmx4g -XX:ReservedCodeCacheSize=2g" \
+  #     -w /src \
+  #     triplai/spark-rm:latest \
+  #     ./dev/make-distribution.sh  \
+  #     --pip \
+  #     --r \
+  #     --tgz \
+  #     -Psparkr \
+  #     -Phive \
+  #     -Phive-thriftserver \
+  #     -Pmesos \
+  #     -Pyarn \
+  #     -Pkubernetes \
+  #     -Pnetlib-lgpl \
+  #     -Phadoop-${HADOOP_VERSION} \
+  #     -Pscala-2.12
+
+  #     cd /tmp/spark
+  #     bin/docker-image-tool.sh -r triplai -t spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION} build
+  #     docker push triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
+  #   displayName: 'build triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}'
+
+  # this script builds the arc image using the spark k8s image
   - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.11 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.9.2 && \
+      export VERSION=$(cat arc/version)
+      export ARC_VERSION=$(arc_version)
+      export SPARK_VERSION=$(spark_version)
+      export SCALA_VERSION=$(scala_version)
+      export HADOOP_VERSION=$(hadoop_version)
+      export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
       docker build . \
-        -f arc/Dockerfile_${SCALA_VERSION} \
+        -f arc/Dockerfile \
+        --build-arg FROM_IMAGE \
         --build-arg ARC_VERSION \
         --build-arg SPARK_VERSION \
         --build-arg HADOOP_VERSION \
         -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
       docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.9.2_${VERSION}'
+    displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}'
 
+  # this script builds the arc-jupyter image using the arc image
   - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.12 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.9.2 && \
+      export VERSION=$(cat arc-jupyter/version)
+      export ARC_VERSION=$(arc_version)
+      export ARC_JUPYTER_VERSION=$(arc-jupyter_version)
+      export SPARK_VERSION=$(spark_version)
+      export SCALA_VERSION=$(scala_version)
+      export HADOOP_VERSION=$(hadoop_version)
+      export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
       docker build . \
-        -f arc/Dockerfile_${SCALA_VERSION} \
-        --build-arg ARC_VERSION \
-        --build-arg SPARK_VERSION \
-        --build-arg HADOOP_VERSION \
-        -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_2.9.2_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.11 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.7.7 && \
-      docker build . \
-        -f arc/Dockerfile_${SCALA_VERSION} \
-        --build-arg ARC_VERSION \
-        --build-arg SPARK_VERSION \
-        --build-arg HADOOP_VERSION \
-        -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.11_hadoop_2.7.7_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc/version) && \
-      export SCALA_VERSION=2.12 && \
-      export ARC_VERSION=$(arc_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.7.7 && \
-      docker build . \
-        -f arc/Dockerfile_${SCALA_VERSION} \
-        --build-arg ARC_VERSION \
-        --build-arg SPARK_VERSION \
-        --build-arg HADOOP_VERSION \
-        -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker push triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_2.12_hadoop_2.7.7_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc-jupyter/version) && \
-      export SCALA_VERSION=2.11 && \
-      export ARC_JUPYTER_VERSION=$(arc-jupyter_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.9.2 && \
-      docker build . \
-      -f arc-jupyter/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_JUPYTER_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
+      -f arc-jupyter/Dockerfile \
+      --build-arg FROM_IMAGE \
+      --build-arg ARC_JUPYTER_VERSION
       -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
       docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
       docker rmi --force $(docker images -q triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.11_hadoop_2.9.2_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc-jupyter/version) && \
-      export SCALA_VERSION=2.12 && \
-      export ARC_JUPYTER_VERSION=$(arc-jupyter_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.9.2 && \
-      docker build . \
-      -f arc-jupyter/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_JUPYTER_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_hadoop_2.9.2_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc-jupyter/version) && \
-      export SCALA_VERSION=2.11 && \
-      export ARC_JUPYTER_VERSION=$(arc-jupyter_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.7.7 && \
-      docker build . \
-      -f arc-jupyter/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_JUPYTER_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.11_hadoop_2.7.7_${VERSION}'
-
-  - script: |
-      export VERSION=$(cat arc-jupyter/version) && \
-      export SCALA_VERSION=2.12 && \
-      export ARC_JUPYTER_VERSION=$(arc-jupyter_version) && \
-      export SPARK_VERSION=$(spark_version) && \
-      export HADOOP_VERSION=2.7.7 && \
-      docker build . \
-      -f arc-jupyter/Dockerfile_${SCALA_VERSION} \
-      --build-arg ARC_JUPYTER_VERSION \
-      --build-arg SPARK_VERSION \
-      --build-arg HADOOP_VERSION \
-      -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION} && \
-      docker rmi --force $(docker images -q triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION})
-    displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_2.12_hadoop_2.7.7_${VERSION}'

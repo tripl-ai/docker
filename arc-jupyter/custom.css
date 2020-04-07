@@ -2,6 +2,11 @@
     width: 99% !important;
 }
 
+.output_result table.monospace tbody * {
+    font-family: monospace;
+    white-space: pre;
+}
+
 div.cell.selected {
     border-left-width: 1px !important;
 }
