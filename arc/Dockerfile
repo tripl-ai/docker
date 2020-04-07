@@ -83,7 +83,7 @@ RUN \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
-  ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
+  ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   echo "cleaning up" && \
   # spark
   rm -rf ${SPARK_HOME}/examples \
@@ -105,7 +105,7 @@ COPY arc/log4j.properties ${SPARK_HOME}/conf/log4j.properties
 
 # override entrypoint
 # original: ENTRYPOINT [ "/opt/entrypoint.sh" ]
-ENTRYPOINT /opt/spark/bin/spark-shell
+ENTRYPOINT /bin/bash
 
 # set workdir so bin/spark-submit works
 WORKDIR ${SPARK_HOME}
