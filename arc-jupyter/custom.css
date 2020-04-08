@@ -7,6 +7,10 @@
     white-space: pre;
 }
 
+.output_result table.monospace tbody td:not(:last-child) {
+    border-right: 1px solid #f2f2f2;
+}
+
 div.cell.selected {
     border-left-width: 1px !important;
 }
