@@ -5,14 +5,15 @@ FROM $FROM_IMAGE
 ARG ARC_VERSION
 ARG SPARK_VERSION
 ARG HADOOP_VERSION
+ARG SCALA_VERSION
 
 # test to ensure all arguments have values then set environment variable
-RUN test -n "$ARC_VERSION" && test -n "$SPARK_VERSION" && test -n "$HADOOP_VERSION"
+RUN test -n "$ARC_VERSION" && test -n "$SPARK_VERSION" && test -n "$HADOOP_VERSION" && test -n "$SCALA_VERSION"
 ENV ARC_VERSION $ARC_VERSION
 ENV SPARK_VERSION $SPARK_VERSION
 ENV HADOOP_VERSION $HADOOP_VERSION
+ENV SCALA_VERSION $SCALA_VERSION
 
-ENV SCALA_VERSION         2.12
 ENV SPARK_HOME            /opt/spark
 ENV SPARK_JARS            /opt/spark/jars
 ENV PYTHONPATH            $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
@@ -22,6 +23,9 @@ ENV OPENBLAS_NUM_THREADS  1
 ENV SPARK_DOWNLOAD_URL    https://www.apache.org/dyn/closer.lua/spark
 ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
 ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
+
+# copy any unmanged libraries
+COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS
 
 # copy merge rules
 COPY arc/merge-jars.py /tmp/merge-jars.py
@@ -63,7 +67,7 @@ RUN \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.1.0 \
   ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
