@@ -66,21 +66,21 @@ RUN \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.1.0 \
-  ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
+  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.2.0 \
+  ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.226 \
-  com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8 \
-  mysql:mysql-connector-java:8.0.17 \
+  com.facebook.presto:presto-jdbc:0.234 \
+  com.microsoft.sqlserver:mssql-jdbc:8.2.1.jre8 \
+  mysql:mysql-connector-java:8.0.19 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.8 \
+  org.postgresql:postgresql:42.2.12 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
   # blas
