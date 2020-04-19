@@ -41,7 +41,8 @@ RUN \
   # see https://github.com/fommil/netlib-java/issues/62 for native blas debug process
   echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list && \
   apt-get update && \
-  apt-get install --no-install-recommends -y python3 libopenblas-base libgfortran3 wget gpg gpg-agent && \
+  apt-get upgrade -y && \
+  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran3 wget gpg gpg-agent && \
   rm /etc/apt/sources.list.d/stretch.list && \
   wget -P /tmp $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz\?as_json | \
   python3 -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
@@ -88,6 +89,9 @@ RUN \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
+  echo "python dependencies" && \
+  pip3 install --upgrade pip setuptools && \
+  pip3 install pandas numpy scipy pyarrow koalas && \
   echo "cleaning up" && \
   # spark
   rm -rf ${SPARK_HOME}/examples \
@@ -107,11 +111,5 @@ RUN \
 # copy in log4j.properties config file
 COPY arc/log4j.properties ${SPARK_HOME}/conf/log4j.properties
 
-# override entrypoint
-# original: ENTRYPOINT [ "/opt/entrypoint.sh" ]
-ENTRYPOINT []
-
 # set workdir so bin/spark-submit works
 WORKDIR ${SPARK_HOME}
-
-

@@ -3,8 +3,13 @@
 }
 
 .output_result table.monospace tbody * {
+    font-size: 14px;
     font-family: monospace;
     white-space: pre;
+}
+
+.output_result table.leftalign tbody * {
+    text-align: left;
 }
 
 .output_result table.monospace tbody td:not(:last-child) {

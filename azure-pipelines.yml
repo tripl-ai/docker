@@ -31,7 +31,7 @@ jobs:
 
   # this script builds the spark-rm image which has python and r configured correctly to compile spark
   # - script: |
-  #     docker build -f spark-rm/Dockerfile . -t triplai/spark-rm:latest
+  #     docker build -f spark-rm/Dockerfile --build-arg UID=$UID . -t triplai/spark-rm:latest
   #   displayName: 'build the spark release manager image (triplai/spark-rm:latest) for compiling spark'    
 
   # this script downloads the spark source code for ${SPARK_VERSION}, compiles it then builds and pushes k8s images to dockerhub
@@ -59,6 +59,7 @@ jobs:
   #     -v /tmp/spark:/src \
   #     -e MAVEN_OPTS="-Xmx4g -XX:ReservedCodeCacheSize=2g" \
   #     -w /src \
+  #     --entrypoint '' \
   #     triplai/spark-rm:latest \
   #     ./dev/make-distribution.sh  \
   #     --pip \

@@ -38,10 +38,9 @@ COPY arc-jupyter/kernel.json /root/.local/share/jupyter/kernels/arc/kernel.json
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN apt-get update && \
-  apt-get install --no-install-recommends -y python3-pip git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget && \
+  apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget && \
   echo "install jupyter and dependencies" && \
-  pip3 install --upgrade pip setuptools && \
-  pip3 install jupyter pandoc pandas numpy scipy pyarrow jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.3 && \
+  pip3 install jupyter pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.3 && \
   jupyter contrib nbextension install --system && \
   jupyter nbextensions_configurator disable --system && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \
@@ -83,5 +82,3 @@ RUN chown -R $NB_USER:users /home/$NB_USER
 USER $NB_USER
 
 WORKDIR /home/$NB_USER
-
-ENTRYPOINT jupyter notebook --ip=0.0.0.0 --no-browser --NotebookApp.password='' --NotebookApp.token=''
