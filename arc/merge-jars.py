@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # this script tries to determine if jars downloaded by coursier already exist in the $SPARK_JARS directory
 # and if not copies the jar to $SPARK_JARS
 import os, re

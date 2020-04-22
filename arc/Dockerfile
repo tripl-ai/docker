@@ -91,7 +91,7 @@ RUN \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   echo "python dependencies" && \
   pip3 install --upgrade pip setuptools && \
-  pip3 install pandas numpy scipy pyarrow koalas && \
+  pip3 install pandas numpy scipy pyarrow koalas kubernetes && \
   echo "cleaning up" && \
   # spark
   rm -rf ${SPARK_HOME}/examples \
