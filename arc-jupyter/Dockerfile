@@ -27,6 +27,9 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
 # disable default save data with notebooks
 COPY arc-jupyter/scrub_output_pre_save.py /tmp/scrub_output_pre_save.py
 
+# copy local repo for test builds
+COPY .m2 /root/.m2
+
 # ui tweaks
 COPY arc-jupyter/custom.js /root/.jupyter/custom/custom.js
 COPY arc-jupyter/custom.css /root/.jupyter/custom/custom.css
@@ -58,7 +61,7 @@ RUN apt-get update && \
   echo "download jars" && \
   /tmp/coursier/coursier-cli fetch \
   --no-default \
-  --repository ivy2Local \
+  --repository file:///root/.m2/repository \
   --repository central \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
@@ -76,6 +79,7 @@ RUN apt-get update && \
   rm -rf /root/.gnupg && \
   rm -rf /root/.wget-hsts && \
   rm -rf /root/.cache && \
+  rm -rf /root/.m2 && \
   rm -rf /tmp/*
 
 RUN chown -R $NB_USER:users /home/$NB_USER

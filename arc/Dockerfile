@@ -30,6 +30,9 @@ COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS
 # copy merge rules
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
+# copy local repo for test builds
+COPY .m2 /root/.m2
+
 # get coursier to download the jars to /tmp/coursier/jars
 # --exclude to remove libraires
 # include any additional plugins at the bottom
@@ -60,7 +63,7 @@ RUN \
   /tmp/coursier/coursier-cli fetch \
   --cache /tmp/coursier/cache \
   --no-default \
-  --repository ivy2Local \
+  --repository file:///root/.m2/repository \
   --repository central \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
@@ -68,7 +71,7 @@ RUN \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.9.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
@@ -104,8 +107,9 @@ RUN \
   apt-get clean -y && \
   # temp
   rm -rf /root/.gnupg && \
-  rm -rf /root/.wget-hsts && \  
+  rm -rf /root/.wget-hsts && \
   rm -rf /root/.cache && \
+  rm -rf /root/.m2 && \
   rm -rf /tmp/*
 
 # copy in log4j.properties config file
