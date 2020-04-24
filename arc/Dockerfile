@@ -74,7 +74,7 @@ RUN \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.9.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
   # drivers
