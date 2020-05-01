@@ -31,7 +31,7 @@ export ARC_VERSION=2.10.2
 export SPARK_VERSION=2.4.5
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.3.0
+export ARC_JUPYTER_VERSION=2.3.1
 
 export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
 docker build . \
@@ -54,7 +54,7 @@ export ARC_VERSION=2.10.2
 export SPARK_VERSION=2.4.5
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.3.0
+export ARC_JUPYTER_VERSION=2.3.1
 
 export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
 docker build . \
@@ -72,4 +72,3 @@ docker build . \
 ## License
 
 Arc is released under the [MIT License](https://opensource.org/licenses/MIT).
-
