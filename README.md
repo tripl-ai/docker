@@ -27,11 +27,11 @@ To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala
 
 ```bash
 export VERSION=$(cat arc/version)
-export ARC_VERSION=2.11.0
+export ARC_VERSION=2.12.0
 export SPARK_VERSION=2.4.5
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.3.1
+export ARC_JUPYTER_VERSION=2.3.2
 
 export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
 docker build . \
@@ -50,11 +50,11 @@ To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter)
 
 ```bash
 export VERSION=$(cat arc-jupyter/version)
-export ARC_VERSION=2.11.0
+export ARC_VERSION=2.12.0
 export SPARK_VERSION=2.4.5
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.3.1
+export ARC_JUPYTER_VERSION=2.3.2
 
 export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
 docker build . \
