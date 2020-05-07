@@ -43,7 +43,7 @@ COPY arc/merge-jars.py /tmp/merge-jars.py
 RUN apt-get update && \
   apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget && \
   echo "install jupyter and dependencies" && \
-  pip3 install jupyter pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.3 && \
+  pip3 install jupyter pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.4 && \
   jupyter contrib nbextension install --system && \
   jupyter nbextensions_configurator disable --system && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \
