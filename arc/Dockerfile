@@ -25,7 +25,7 @@ ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
 ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
 
 # copy any unmanged libraries
-COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS
+COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
 
 # copy merge rules
 COPY arc/merge-jars.py /tmp/merge-jars.py
