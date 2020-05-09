@@ -86,6 +86,7 @@ jobs:
       export SPARK_VERSION=$(spark_version) && \
       export SCALA_VERSION=$(scala_version) && \
       export HADOOP_VERSION=$(hadoop_version) && \
+      export ARC_JUPYTER_VERSION=$(arc-jupyter_version) && \
       export ARC_IMAGE_VERSION=$(cat arc/version) && \
       export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version) && \
       export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION} && \
@@ -106,8 +107,9 @@ jobs:
       export SPARK_VERSION=$(spark_version) && \
       export SCALA_VERSION=$(scala_version) && \
       export HADOOP_VERSION=$(hadoop_version) && \
+      export ARC_JUPYTER_VERSION=$(arc-jupyter_version) && \
       export ARC_IMAGE_VERSION=$(cat arc/version) && \
-      export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version) && \      
+      export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version) && \   
       export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} && \
       docker build . \
       -f arc-jupyter/Dockerfile \
