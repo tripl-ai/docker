@@ -26,12 +26,13 @@ Then the official Spark `k8s` Dockerfile is used to built a generic Spark image.
 To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
 
 ```bash
-export VERSION=$(cat arc/version)
 export ARC_VERSION=2.12.2
 export SPARK_VERSION=2.4.5
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
 export ARC_JUPYTER_VERSION=2.3.2
+export ARC_IMAGE_VERSION=$(cat arc/version)
+export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
 export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
 docker build . \
@@ -41,7 +42,7 @@ docker build . \
   --build-arg SCALA_VERSION \
   --build-arg SPARK_VERSION \
   --build-arg HADOOP_VERSION \
-  -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+  -t triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
 ```
 
 ### Build arc-jupyter
@@ -49,19 +50,20 @@ docker build . \
 To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
 
 ```bash
-export VERSION=$(cat arc-jupyter/version)
 export ARC_VERSION=2.12.2
 export SPARK_VERSION=2.4.5
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
 export ARC_JUPYTER_VERSION=2.3.2
+export ARC_IMAGE_VERSION=$(cat arc/version)
+export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
-export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
 docker build . \
 -f arc-jupyter/Dockerfile \
 --build-arg FROM_IMAGE \
 --build-arg ARC_JUPYTER_VERSION \
--t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${VERSION}
+-t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
 ```
 
 ## Authors/Contributors
