@@ -43,14 +43,14 @@ COPY arc/merge-jars.py /tmp/merge-jars.py
 RUN apt-get update && \
   apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget && \
   echo "install jupyter and dependencies" && \
-  pip3 install jupyter pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.4 && \
+  pip3 install jupyter jupyterhub pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.4 && \
   jupyter contrib nbextension install --system && \
   jupyter nbextensions_configurator disable --system && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \
   jupyter notebook --generate-config && \
   cat /tmp/scrub_output_pre_save.py >> /root/.jupyter/jupyter_notebook_config.py && \
-  cp -r /root/.jupyter/* /home/jovyan/.jupyter && \
-  cp -r /root/.local/* /home/jovyan/.local && \
+  cp -r /root/.jupyter /etc/jupyter && \
+  cp -r /root/.local/share/jupyter  /usr/share/jupyter && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download cousier and dependencies" && \
