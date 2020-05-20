@@ -21,36 +21,29 @@ ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
-  mkdir -p /home/$NB_USER/.jupyter && \
   mkdir -p /home/$NB_USER/.local
 
-# disable default save data with notebooks
-COPY arc-jupyter/scrub_output_pre_save.py /tmp/scrub_output_pre_save.py
 
 # copy local repo for test builds
 COPY .m2 /root/.m2
 
 # ui tweaks
-COPY arc-jupyter/custom.js /root/.jupyter/custom/custom.js
-COPY arc-jupyter/custom.css /root/.jupyter/custom/custom.css
-COPY arc-jupyter/notebook.json /root/.jupyter/nbconfig/notebook.json
+# disable default save data with notebooks
+COPY arc-jupyter/.jupyter /opt/.jupyter
 
-# add the kernel to start arc
-COPY arc-jupyter/kernel.json /root/.local/share/jupyter/kernels/arc/kernel.json
-
+# copy jar merging script
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN apt-get update && \
   apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget && \
   echo "install jupyter and dependencies" && \
-  pip3 install jupyter pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.4 && \
+  pip3 install jupyter jupyterhub pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
   jupyter contrib nbextension install --system && \
   jupyter nbextensions_configurator disable --system && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \
   jupyter notebook --generate-config && \
-  cat /tmp/scrub_output_pre_save.py >> /root/.jupyter/jupyter_notebook_config.py && \
-  cp -r /root/.jupyter/* /home/jovyan/.jupyter && \
-  cp -r /root/.local/* /home/jovyan/.local && \
+  chmod -R 755 /opt/.jupyter && \
+  cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download cousier and dependencies" && \
@@ -84,5 +77,8 @@ RUN apt-get update && \
 
 RUN chown -R $NB_USER:users /home/$NB_USER
 USER $NB_USER
+
+# add the kernel to start arc
+COPY arc-jupyter/kernel.json /usr/local/share/jupyter/kernels/arc/kernel.json
 
 WORKDIR /home/$NB_USER
