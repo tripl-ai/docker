@@ -41,7 +41,6 @@ RUN apt-get update && \
   jupyter contrib nbextension install --system && \
   jupyter nbextensions_configurator disable --system && \
   jupyter nbextension enable execute_time/ExecuteTime --system && \
-  jupyter notebook --generate-config && \
   chmod -R 755 /opt/.jupyter && \
   cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
