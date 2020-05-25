@@ -68,7 +68,7 @@ RUN \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.788 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.789 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.3.0 \
