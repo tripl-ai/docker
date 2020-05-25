@@ -63,6 +63,7 @@ RUN apt-get update && \
   echo "merging jars" && \
   # override the jar included with spark
   rm ${SPARK_JARS}/shapeless_${SCALA_VERSION}-*.jar && \
+  rm ${SPARK_JARS}/cats-kernel_2.12-*.jar && \
   python3 /tmp/merge-jars.py && \
   echo "cleaning up" && \
   apt-get remove -y wget && \
