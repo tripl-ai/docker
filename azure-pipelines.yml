@@ -13,9 +13,9 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   variables:
-    arc_version: '2.12.5'
+    arc_version: '2.13.0'
     arc-jupyter_version: '2.4.2'
-    spark_version: '2.4.5'
+    spark_version: '2.4.6'
     hadoop_version: '2.9.2'
     scala_version: '2.12'
     spark_checksum_url: 'https://www.apache.org/dist/spark'
@@ -90,7 +90,7 @@ jobs:
       export ARC_IMAGE_VERSION=$(cat arc/version)
       export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
       export FROM_IMAGE=triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
-      
+
       docker build . \
         -f arc/Dockerfile \
         --build-arg FROM_IMAGE \
@@ -124,7 +124,7 @@ jobs:
       -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
 
       docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
-      
+
       docker tag triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} triplai/arc-jupyter:latest
       docker push triplai/arc-jupyter:latest
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}'
