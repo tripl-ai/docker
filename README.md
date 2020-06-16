@@ -30,7 +30,7 @@ export ARC_VERSION=2.14.0
 export SPARK_VERSION=2.4.6
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.4.2
+export ARC_JUPYTER_VERSION=2.5.0
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
@@ -54,7 +54,7 @@ export ARC_VERSION=2.14.0
 export SPARK_VERSION=2.4.6
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.4.2
+export ARC_JUPYTER_VERSION=2.5.0
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 

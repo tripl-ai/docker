@@ -14,7 +14,7 @@ jobs:
 
   variables:
     arc_version: '2.14.0'
-    arc-jupyter_version: '2.4.2'
+    arc-jupyter_version: '2.5.0'
     spark_version: '2.4.6'
     hadoop_version: '2.9.2'
     scala_version: '2.12'
