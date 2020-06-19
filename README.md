@@ -26,11 +26,11 @@ Then the official Spark `k8s` Dockerfile is used to built a generic Spark image.
 To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
 
 ```bash
-export ARC_VERSION=2.14.0
-export SPARK_VERSION=2.4.6
+export ARC_VERSION=3.0.0
+export SPARK_VERSION=3.0.0
 export SCALA_VERSION=2.12
-export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.5.0
+export HADOOP_VERSION=3.2.0
+export ARC_JUPYTER_VERSION=3.0.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
@@ -50,11 +50,11 @@ docker build . \
 To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
 
 ```bash
-export ARC_VERSION=2.14.0
-export SPARK_VERSION=2.4.6
+export ARC_VERSION=3.0.0
+export SPARK_VERSION=3.0.0
 export SCALA_VERSION=2.12
-export HADOOP_VERSION=2.9.2
-export ARC_JUPYTER_VERSION=2.5.0
+export HADOOP_VERSION=3.2.0
+export ARC_JUPYTER_VERSION=3.0.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 

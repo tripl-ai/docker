@@ -14,9 +14,11 @@ ENV SPARK_VERSION $SPARK_VERSION
 ENV HADOOP_VERSION $HADOOP_VERSION
 ENV SCALA_VERSION $SCALA_VERSION
 
+USER root
+
 ENV SPARK_HOME            /opt/spark
 ENV SPARK_JARS            /opt/spark/jars
-ENV PYTHONPATH            $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
+ENV PYTHONPATH            $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip
 ENV PYSPARK_PYTHON        python3
 ENV LD_LIBRARY_PATH       /usr/lib/x86_64-linux-gnu
 ENV OPENBLAS_NUM_THREADS  1
@@ -68,25 +70,25 @@ RUN \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.789 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.803 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:1.9.0 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-graph-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
+  # ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.4.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.0.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.0.0 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.234 \
-  com.microsoft.sqlserver:mssql-jdbc:8.2.1.jre8 \
-  mysql:mysql-connector-java:8.0.19 \
+  com.facebook.presto:presto-jdbc:0.236 \
+  com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8 \
+  mysql:mysql-connector-java:8.0.20 \
+  org.postgresql:postgresql:42.2.14 \
+  com.oracle.ojdbc:ojdbc8:19.3.0.0 \  
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  org.postgresql:postgresql:42.2.12 \
-  com.oracle.ojdbc:ojdbc8:19.3.0.0 \
-  com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
+  com.google.cloud.bigdataoss:gcs-connector:hadoop3-2.1.3 \
   # blas
   com.github.fommil.netlib:all:1.1.2 \
   > /tmp/coursier/resolved && \
@@ -113,8 +115,9 @@ RUN \
   rm -rf /root/.m2 && \
   rm -rf /tmp/*
 
-# copy in log4j.properties config file
+# copy in configurations
 COPY arc/log4j.properties ${SPARK_HOME}/conf/log4j.properties
+COPY arc/spark-defaults.conf ${SPARK_HOME}/conf/spark-defaults.conf
 
 # set workdir so bin/spark-submit works
 WORKDIR ${SPARK_HOME}

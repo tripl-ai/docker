@@ -9,7 +9,7 @@ RUN test -n "$ARC_JUPYTER_VERSION"
 ENV ARC_JUPYTER_VERSION $ARC_JUPYTER_VERSION
 
 ENV JAVA_OPTS             "-Xmx1g"
-ENV BASE_JAVA_OPTS        "-XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+ENV BASE_JAVA_OPTS        "-XX:+UseG1GC -XX:+UnlockExperimentalVMOptions"
 
 ENV SPARK_DOWNLOAD_URL    https://www.apache.org/dyn/closer.lua/spark/
 ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
@@ -63,6 +63,7 @@ RUN apt-get update && \
   echo "merging jars" && \
   # override the jar included with spark
   rm ${SPARK_JARS}/shapeless_${SCALA_VERSION}-*.jar && \
+  rm ${SPARK_JARS}/cats-kernel_2.12-*.jar && \
   python3 /tmp/merge-jars.py && \
   echo "cleaning up" && \
   apt-get remove -y wget && \
