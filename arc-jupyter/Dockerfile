@@ -35,7 +35,7 @@ COPY arc-jupyter/.jupyter /opt/.jupyter
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN apt-get update && \
-  apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget && \
+  apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget nodejs npm && \
   echo "install jupyter and dependencies" && \
   pip3 install jupyter jupyterhub pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
   jupyter contrib nbextension install --system && \
@@ -45,6 +45,21 @@ RUN apt-get update && \
   cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
+  echo "download jupyterlab" && \
+  pip3 install jupyterlab==2.2.0 jupyterlab-git && \
+  jupyter lab build && \
+  cd /usr/local/share/jupyter && \
+  git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
+  cd arc-jupyterlab-extension && \
+  git checkout tags/0.0.3 && \
+  jupyter labextension disable completer-extension && \
+  jupyter labextension disable mathjax-extension && \
+  jupyter labextension disable extensionmanager-extension && \
+  jlpm install && \
+  jupyter labextension link . && \
+  jupyter lab build && \
+  rm -rf /usr/local/share/jupyter/arc-jupyterlab-extension/node_modules && \
+  rm -rf /usr/local/share/jupyter/lab/staging && \
   echo "download cousier and dependencies" && \
   mkdir -p /tmp/coursier/jars && \
   wget -P /tmp/coursier https://git.io/coursier-cli && \
