@@ -55,6 +55,7 @@ RUN apt-get update && \
   jupyter labextension disable completer-extension && \
   jupyter labextension disable mathjax-extension && \
   jupyter labextension disable extensionmanager-extension && \
+  jupyter labextension install jupyterlab-execute-time && \
   jlpm install && \
   jupyter labextension link . && \
   jupyter lab build && \

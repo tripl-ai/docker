@@ -74,14 +74,14 @@ RUN \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   # ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.0.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.1.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
+  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.1.0 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.236 \
+  com.facebook.presto:presto-jdbc:0.238 \
   com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8 \
   mysql:mysql-connector-java:8.0.20 \
   org.postgresql:postgresql:42.2.14 \
