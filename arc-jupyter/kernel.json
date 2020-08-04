@@ -6,6 +6,6 @@
     "/usr/bin/env",
     "sh",
     "-c",
-    "java -cp $(echo $SPARK_JARS/*.jar | tr ' ' ':') $JAVA_OPTS $BASE_JAVA_OPTS ai.tripl.arc.jupyter.ArcKernel --connection={connection_file}"
+    "java -cp $(echo $SPARK_JARS/*.jar | tr ' ' ':'):${SPARK_HOME}/conf $JAVA_OPTS $BASE_JAVA_OPTS ai.tripl.arc.jupyter.ArcKernel --connection={connection_file}"
   ]
 }
