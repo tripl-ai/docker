@@ -70,7 +70,7 @@ RUN \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.820 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.832 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   # ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.4.0 \
@@ -88,7 +88,7 @@ RUN \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  com.google.cloud.bigdataoss:gcs-connector:hadoop3-2.1.3 \
+  com.google.cloud.bigdataoss:gcs-connector:hadoop3-2.1.4 \
   # blas
   com.github.fommil.netlib:all:1.1.2 \
   > /tmp/coursier/resolved && \
