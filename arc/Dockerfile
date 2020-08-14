@@ -94,7 +94,7 @@ RUN \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
-  wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.4.jar \
+  wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.4.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   echo "python dependencies" && \
   pip3 install --upgrade pip setuptools && \
