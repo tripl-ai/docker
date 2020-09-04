@@ -29,12 +29,13 @@ jobs:
 
   # Download the pgp keys from azure secure library
   - task: DownloadSecureFile@1
+    name: githubToken
     displayName: 'Get GH_TOKEN.txt from Azure Secure Library'
     inputs:
       secureFile: "GH_TOKEN.txt"
 
   - script: |
-      cat $(DownloadSecureFile1.secureFilePath) | docker login docker.pkg.github.com -u seddonm1 --password-stdin
+      cat $(githubToken.secureFilePath) | docker login docker.pkg.github.com -u seddonm1 --password-stdin
     displayName: 'login to github package registry hub to allow push to tripl.ai packages'
 
   # build images uncomment to build
