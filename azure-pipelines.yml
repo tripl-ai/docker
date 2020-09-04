@@ -27,6 +27,16 @@ jobs:
       docker login --username $(DOCKER_HUB_USERNAME) --password $(DOCKER_HUB_PASSWORD)
     displayName: 'login to docker hub to allow push (https://hub.docker.com/u/triplai)'
 
+  # Download the pgp keys from azure secure library
+  - task: DownloadSecureFile@1
+    displayName: 'Get GH_TOKEN.txt from Azure Secure Library'
+    inputs:
+      secureFile: "GH_TOKEN.txt"
+
+  - script: |
+      cat $(DownloadSecureFile1.secureFilePath) | docker login docker.pkg.github.com -u seddonm1 --password-stdin
+    displayName: 'login to github package registry hub to allow push to tripl.ai packages'
+
   # build images uncomment to build
 
   # this script builds the spark-rm image which has python and r configured correctly to compile spark
@@ -104,6 +114,13 @@ jobs:
 
       docker tag triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} triplai/arc:latest
       docker push triplai/arc:latest
+
+      # tag push to github package registry
+      docker tag triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} docker.pkg.github.com/tripl-ai/arc/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
+      docker push docker.pkg.github.com/tripl-ai/arc/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
+      docker tag triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} docker.pkg.github.com/tripl-ai/arc/arc:latest
+      docker push docker.pkg.github.com/tripl-ai/arc/arc:latest
+
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}'
 
   # this script builds the arc-jupyter image using the arc image
@@ -127,4 +144,11 @@ jobs:
 
       docker tag triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} triplai/arc-jupyter:latest
       docker push triplai/arc-jupyter:latest
+
+      # tag push to github package registry
+      docker tag triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} docker.pkg.github.com/tripl-ai/arc-jupyter/triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
+      docker push docker.pkg.github.com/tripl-ai/arc-jupyter/triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
+      docker tag triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} docker.pkg.github.com/tripl-ai/arc-jupyter/arc-jupyter:latest
+      docker push docker.pkg.github.com/tripl-ai/arc-jupyter/arc-jupyter:latest
+
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}'
