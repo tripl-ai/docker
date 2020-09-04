@@ -47,7 +47,7 @@ RUN \
   echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list && \
   apt-get update && \
   apt-get upgrade -y && \
-  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran3 wget gpg gpg-agent && \
+  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran3 wget htop dnsutils gpg gpg-agent && \
   rm /etc/apt/sources.list.d/stretch.list && \
   wget -P /tmp $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz\?as_json | \
   python3 -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
@@ -70,16 +70,16 @@ RUN \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.832 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.851 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  # ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.1.0 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.1.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.2.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.4.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.2.0 \
   # drivers
   com.facebook.presto:presto-jdbc:0.238 \
   com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8 \
@@ -88,7 +88,6 @@ RUN \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  com.google.cloud:google-cloud-bigquery:1.116.9 \
   # blas
   com.github.fommil.netlib:all:1.1.2 \
   > /tmp/coursier/resolved && \
@@ -97,7 +96,7 @@ RUN \
   wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.4.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   echo "python dependencies" && \
-  pip3 install --upgrade pip setuptools && \
+  pip3 install --upgrade pip setuptools==49.6.0 && \
   pip3 install pandas numpy scipy pyarrow koalas kubernetes && \
   echo "cleaning up" && \
   # spark

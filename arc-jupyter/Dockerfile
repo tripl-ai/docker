@@ -1,6 +1,9 @@
 ARG FROM_IMAGE
 FROM $FROM_IMAGE
 
+# sudo password if set
+ARG PASSWD
+
 # Versions
 ARG ARC_JUPYTER_VERSION
 
@@ -9,7 +12,7 @@ RUN test -n "$ARC_JUPYTER_VERSION"
 ENV ARC_JUPYTER_VERSION $ARC_JUPYTER_VERSION
 
 ENV JAVA_OPTS             "-Xmx1g"
-ENV BASE_JAVA_OPTS        "-XX:+UseG1GC -XX:+UnlockExperimentalVMOptions"
+ENV BASE_JAVA_OPTS        "-XX:+UseG1GC"
 
 ENV SPARK_DOWNLOAD_URL    https://www.apache.org/dyn/closer.lua/spark/
 ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
@@ -23,6 +26,8 @@ ARG NB_GID="100"
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
   mkdir -p /home/$NB_USER/.local
 
+# set root password if provided
+RUN if [ -n "$PASSWD" ]; then echo "${NB_USER}:${PASSWD}" | chpasswd && usermod -aG sudo ${NB_USER}; fi
 
 # copy local repo for test builds
 COPY .m2 /root/.m2
@@ -35,7 +40,7 @@ COPY arc-jupyter/.jupyter /opt/.jupyter
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN apt-get update && \
-  apt-get install --no-install-recommends -y git texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget nodejs npm && \
+  apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget nodejs npm && \
   echo "install jupyter and dependencies" && \
   pip3 install jupyter jupyterhub pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
   jupyter contrib nbextension install --system && \
@@ -46,12 +51,12 @@ RUN apt-get update && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download jupyterlab" && \
-  pip3 install jupyterlab==2.2.2 jupyterlab-git && \
+  pip3 install jupyterlab==2.2.6 jupyterlab-git && \
   jupyter lab build && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
   cd arc-jupyterlab-extension && \
-  git checkout tags/0.0.4 && \
+  git checkout tags/0.0.6 && \
   jupyter labextension disable completer-extension && \
   jupyter labextension disable mathjax-extension && \
   jupyter labextension disable extensionmanager-extension && \
