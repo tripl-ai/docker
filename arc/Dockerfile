@@ -72,7 +72,7 @@ RUN \
   --exclude org.slf4j:slf4j-nop \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.851 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.2.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.4.0 \
