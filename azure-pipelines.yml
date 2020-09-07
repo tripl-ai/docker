@@ -138,6 +138,7 @@ jobs:
       docker build . \
       -f arc-jupyter/Dockerfile \
       --build-arg FROM_IMAGE \
+      --build-arg PASSWD=$(PASSWD) \
       --build-arg ARC_JUPYTER_VERSION \
       -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
 
