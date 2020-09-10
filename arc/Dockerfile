@@ -70,6 +70,7 @@ RUN \
   --repository sonatype:snapshots \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
+  --exclude io.grpc:grpc-netty \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.851 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.1.0 \
@@ -90,6 +91,8 @@ RUN \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   # blas
   com.github.fommil.netlib:all:1.1.2 \
+  # grpc override
+  io.grpc:grpc-netty-shaded:1.30.2 \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
