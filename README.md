@@ -17,9 +17,13 @@ This is a working document and will be updated as more plugins are built and/or 
 
 ## Building
 
-These images use the offical `spark-rm` image with a slightly modified Dockerfile to fix defects. This allows the official Spark releases to be compled and packaged.
-
 Then the official Spark `k8s` Dockerfile is used to built a generic Spark image. Both images below then use that image as their base.
+
+It can be build like:
+
+```bash
+./bin/docker-image-tool.sh -r ghcr.io/tripl-ai -t spark_3.0.1_scala_2.12_hadoop_3.2.0 build
+```
 
 ### Build arc
 
@@ -44,8 +48,6 @@ docker build . \
   --build-arg HADOOP_VERSION \
   -t ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
 ```
-docker pull ghcr.io/tripl-ai/arc:latest
-
 ### Build arc-jupyter
 
 To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:

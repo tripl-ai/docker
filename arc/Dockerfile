@@ -24,7 +24,7 @@ ENV LD_LIBRARY_PATH       /usr/lib/x86_64-linux-gnu
 ENV OPENBLAS_NUM_THREADS  1
 ENV SPARK_DOWNLOAD_URL    https://www.apache.org/dyn/closer.lua/spark
 ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
-ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
+ENV SPARK_KEYS_URL        https://dist.apache.org/repos/dist/dev/spark/KEYS
 
 # copy any unmanged libraries
 COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
