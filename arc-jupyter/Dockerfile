@@ -108,4 +108,6 @@ COPY arc-jupyter/kernel.json /usr/local/share/jupyter/kernels/arc/kernel.json
 
 WORKDIR /home/$NB_USER
 
-CMD .run_jupyter.sh
+# override the official spark image entry point
+ENTRYPOINT [""]
+CMD ["./.run_jupyter.sh"]
