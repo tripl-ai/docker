@@ -96,7 +96,11 @@ RUN apt-get update && \
   rm -rf /root/.m2 && \
   rm -rf /tmp/*
 
-RUN chown -R $NB_USER:users /home/$NB_USER
+
+# inject run command
+COPY arc-jupyter/.run_jupyter.sh /home/$NB_USER
+RUN chmod +x /home/$NB_USER/.run_jupyter.sh && \
+  chown -R $NB_USER:users /home/$NB_USER
 USER $NB_USER
 
 # add the kernel to start arc
@@ -104,7 +108,4 @@ COPY arc-jupyter/kernel.json /usr/local/share/jupyter/kernels/arc/kernel.json
 
 WORKDIR /home/$NB_USER
 
-# inject run command
-COPY arc-jupyter/.run_jupyter.sh /home/$NB_USER
-RUN chmod +x .run_jupyter.sh
 CMD .run_jupyter.sh
