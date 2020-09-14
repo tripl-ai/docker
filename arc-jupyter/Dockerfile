@@ -106,4 +106,4 @@ WORKDIR /home/$NB_USER
 
 # inject run command
 COPY arc-jupyter/run_jupyter.sh /home/$NB_USER
-CMD run_jupyter.sh
+CMD .run_jupyter.sh
