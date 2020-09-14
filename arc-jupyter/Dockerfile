@@ -42,16 +42,13 @@ COPY arc/merge-jars.py /tmp/merge-jars.py
 RUN apt-get update && \
   apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget nodejs npm && \
   echo "install jupyter and dependencies" && \
-  pip3 install jupyter jupyterhub pandoc jupyter_contrib_nbextensions GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
-  jupyter contrib nbextension install --system && \
-  jupyter nbextensions_configurator disable --system && \
-  jupyter nbextension enable execute_time/ExecuteTime --system && \
+  pip3 install jupyter jupyterhub pandoc GitPython git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
   chmod -R 755 /opt/.jupyter && \
   cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download jupyterlab" && \
-  pip3 install jupyterlab==2.2.6 jupyterlab-git && \
+  pip3 install jupyterlab==2.2.7 jupyterlab-git && \
   jupyter lab build && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
@@ -60,7 +57,6 @@ RUN apt-get update && \
   jupyter labextension disable completer-extension && \
   jupyter labextension disable mathjax-extension && \
   jupyter labextension disable extensionmanager-extension && \
-  jupyter labextension install jupyterlab-execute-time && \
   jlpm install && \
   jupyter labextension link . && \
   jupyter lab build && \
@@ -95,7 +91,6 @@ RUN apt-get update && \
   rm -rf /root/.cache && \
   rm -rf /root/.m2 && \
   rm -rf /tmp/*
-
 
 # inject run command
 COPY arc-jupyter/.run_jupyter.sh /home/$NB_USER
