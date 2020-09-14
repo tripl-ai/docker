@@ -105,5 +105,5 @@ COPY arc-jupyter/kernel.json /usr/local/share/jupyter/kernels/arc/kernel.json
 WORKDIR /home/$NB_USER
 
 # inject run command
-COPY run_jupyter.sh /home/$NB_USER
+COPY run_jupyter.sh /home/jovyan
 CMD run_jupyter.sh
