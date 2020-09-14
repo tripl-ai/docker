@@ -103,3 +103,7 @@ USER $NB_USER
 COPY arc-jupyter/kernel.json /usr/local/share/jupyter/kernels/arc/kernel.json
 
 WORKDIR /home/$NB_USER
+
+# inject run command
+COPY run_jupyter.sh /home/$NB_USER
+CMD run_jupyter.sh
