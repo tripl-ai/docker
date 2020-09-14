@@ -105,4 +105,4 @@ WORKDIR /home/$NB_USER
 
 # override the official spark image entry point
 ENTRYPOINT [""]
-CMD ["./.run_jupyter.sh"]
+CMD ["/home/jovyan/.run_jupyter.sh"]
