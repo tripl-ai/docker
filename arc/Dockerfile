@@ -10,26 +10,31 @@ RUN test -n "$ARC_VERSION" && test -n "$SPARK_VERSION" && test -n "$HADOOP_VERSI
 
 USER root
 
-ENV ARC_VERSION=$ARC_VERSION \
-    SPARK_VERSION=$SPARK_VERSION \
-    HADOOP_VERSION=$HADOOP_VERSION \
-    SCALA_VERSION=$SCALA_VERSION \
-    SPARK_HOME=/opt/spark \
-    SPARK_JARS=/opt/spark/jars \
-    PYTHONPATH=SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip \
-    PYSPARK_PYTHON=python3 \
-    LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu \
-    OPENBLAS_NUM_THREADS=1 \
-    SPARK_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark \
-    SPARK_CHECKSUM_URL=https://www.apache.org/dist/spark \
-    SPARK_KEYS_URL=https://dist.apache.org/repos/dist/dev/spark/KEYS \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US \
-    LC_ALL=en_US.UTF-8
+ENV \
+  ARC_VERSION=$ARC_VERSION \
+  SPARK_VERSION=$SPARK_VERSION \
+  HADOOP_VERSION=$HADOOP_VERSION \
+  SCALA_VERSION=$SCALA_VERSION \
+  SPARK_HOME=/opt/spark \
+  SPARK_JARS=/opt/spark/jars \
+  PYTHONPATH=SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip \
+  PYSPARK_PYTHON=python3 \
+  LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu \
+  OPENBLAS_NUM_THREADS=1 \
+  SPARK_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark \
+  SPARK_CHECKSUM_URL=https://www.apache.org/dist/spark \
+  SPARK_KEYS_URL=https://dist.apache.org/repos/dist/dev/spark/KEYS
+
 
 # set locale
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    locale-gen
+RUN \
+  apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* && \
+  localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+ENV \
+  LANG=en_US.UTF-8 \
+  LANGUAGE=en_US \
+  LC_ALL=en_US.UTF-8
 
 # copy any unmanged libraries
 COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
