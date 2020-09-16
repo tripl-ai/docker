@@ -6,18 +6,15 @@ ARG PASSWD
 
 # Versions
 ARG ARC_JUPYTER_VERSION
-
-# test to ensure all arguments have values then set environment variable
 RUN test -n "$ARC_JUPYTER_VERSION"
-ENV ARC_JUPYTER_VERSION $ARC_JUPYTER_VERSION
 
-ENV JAVA_OPTS             "-Xmx1g"
-ENV BASE_JAVA_OPTS        "-XX:+UseG1GC"
-
-ENV SPARK_DOWNLOAD_URL    https://www.apache.org/dyn/closer.lua/spark/
-ENV SPARK_CHECKSUM_URL    https://www.apache.org/dist/spark
-ENV SPARK_KEYS_URL        https://www.apache.org/dist/spark/KEYS
-ENV PATH                  $PATH:$SPARK_HOME/bin
+ENV ARC_JUPYTER_VERSION $ARC_JUPYTER_VERSION \
+  JAVA_OPTS "-Xmx1g" \
+  BASE_JAVA_OPTS "-XX:+UseG1GC" \
+  SPARK_DOWNLOAD_URL https://www.apache.org/dyn/closer.lua/spark/ \
+  SPARK_CHECKSUM_URL https://www.apache.org/dist/spark \
+  SPARK_KEYS_URL https://www.apache.org/dist/spark/KEYS \
+  PATH $PATH:$SPARK_HOME/bin
 
 # add user
 ARG NB_USER="jovyan"
