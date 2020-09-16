@@ -27,6 +27,10 @@ ENV ARC_VERSION=$ARC_VERSION \
     LANGUAGE=en_US \
     LC_ALL=en_US.UTF-8
 
+# set locale
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+
 # copy any unmanged libraries
 COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
 
