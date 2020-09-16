@@ -8,13 +8,13 @@ ARG PASSWD
 ARG ARC_JUPYTER_VERSION
 RUN test -n "$ARC_JUPYTER_VERSION"
 
-ENV ARC_JUPYTER_VERSION $ARC_JUPYTER_VERSION \
-  JAVA_OPTS "-Xmx1g" \
-  BASE_JAVA_OPTS "-XX:+UseG1GC" \
-  SPARK_DOWNLOAD_URL https://www.apache.org/dyn/closer.lua/spark/ \
-  SPARK_CHECKSUM_URL https://www.apache.org/dist/spark \
-  SPARK_KEYS_URL https://www.apache.org/dist/spark/KEYS \
-  PATH $PATH:$SPARK_HOME/bin
+ENV ARC_JUPYTER_VERSION=$ARC_JUPYTER_VERSION \
+  JAVA_OPTS="-Xmx1g" \
+  BASE_JAVA_OPTS="-XX:+UseG1GC" \
+  SPARK_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark/ \
+  SPARK_CHECKSUM_URL=https://www.apache.org/dist/spark \
+  SPARK_KEYS_URL=https://www.apache.org/dist/spark/KEYS \
+  PATH=$PATH:$SPARK_HOME/bin
 
 # add user
 ARG NB_USER="jovyan"
