@@ -38,59 +38,6 @@ jobs:
       cat $(githubToken.secureFilePath) | docker login ghcr.io -u seddonm1 --password-stdin
     displayName: 'login to github package registry hub to allow push to tripl.ai packages'
 
-  # build images uncomment to build
-
-  # this script builds the spark-rm image which has python and r configured correctly to compile spark
-  # - script: |
-  #     docker build -f spark-rm/Dockerfile --build-arg UID=$UID . -t triplai/spark-rm:latest
-  #   displayName: 'build the spark release manager image (triplai/spark-rm:latest) for compiling spark'
-
-  # this script downloads the spark source code for ${SPARK_VERSION}, compiles it then builds and pushes k8s images to dockerhub
-  # - script: |
-  #     export SPARK_VERSION=$(spark_version)
-  #     export HADOOP_VERSION=$(hadoop_version)
-  #     export SCALA_VERSION=$(scala_version)
-  #     export SPARK_CHECKSUM_URL=$(spark_checksum_url)
-  #     export SPARK_KEYS_URL=$(spark_keys_url)
-
-  #     wget -P /tmp $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz\?as_json | \
-  #     python3 -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
-  #     wget -P /tmp ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz.asc && \
-  #     wget -P /tmp ${SPARK_KEYS_URL} && \
-  #     gpg --import /tmp/KEYS && \
-  #     gpg --verify /tmp/spark-${SPARK_VERSION}.tgz.asc && \
-  #     mkdir -p /tmp/spark && \
-  #     tar -xvf /tmp/spark-${SPARK_VERSION}.tgz -C /tmp/spark --strip-components=1
-
-  #     # add hadoop build profile
-  #     sed -i.bak 's/<profiles>/<profiles><profile><id>hadoop-'${HADOOP_VERSION}'<\/id><properties><hadoop.version>'${HADOOP_VERSION}'<\/hadoop.version><curator.version>2.13.0<\/curator.version><\/properties><\/profile>/g' /tmp/spark/pom.xml
-
-  #     docker run \
-  #     -it \
-  #     -v /tmp/spark:/src \
-  #     -e MAVEN_OPTS="-Xmx4g -XX:ReservedCodeCacheSize=2g" \
-  #     -w /src \
-  #     --entrypoint '' \
-  #     triplai/spark-rm:latest \
-  #     ./dev/make-distribution.sh  \
-  #     --pip \
-  #     --r \
-  #     --tgz \
-  #     -Psparkr \
-  #     -Phive \
-  #     -Phive-thriftserver \
-  #     -Pmesos \
-  #     -Pyarn \
-  #     -Pkubernetes \
-  #     -Pnetlib-lgpl \
-  #     -Phadoop-${HADOOP_VERSION} \
-  #     -Pscala-2.12
-
-  #     cd /tmp/spark
-  #     bin/docker-image-tool.sh -r triplai -t spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION} build
-  #     docker push triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
-  #   displayName: 'build triplai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}'
-
   # this script builds the arc image using the spark k8s image
   - script: |
       export ARC_VERSION=$(arc_version)

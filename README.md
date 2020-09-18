@@ -27,7 +27,7 @@ It can be build like:
 
 ### Build arc
 
-To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
+To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.12:
 
 ```bash
 export ARC_VERSION=3.3.3
@@ -50,7 +50,7 @@ docker build . \
 ```
 ### Build arc-jupyter
 
-To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.11. Change the `SCALA_VERSION` variable for 2.12:
+To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.12:
 
 ```bash
 export ARC_VERSION=3.3.3
