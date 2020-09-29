@@ -25,7 +25,6 @@ ENV \
   SPARK_CHECKSUM_URL=https://www.apache.org/dist/spark \
   SPARK_KEYS_URL=https://dist.apache.org/repos/dist/dev/spark/KEYS
 
-
 # set locale
 RUN \
   apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* && \
@@ -81,16 +80,17 @@ RUN \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.851 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.865 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.3.1 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.2.0 \
+  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.6.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.4.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.5.0 \
+  ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.0.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
+  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.3.0 \
   # drivers
   com.facebook.presto:presto-jdbc:0.238 \
   com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8 \
@@ -106,7 +106,7 @@ RUN \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
-  wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.4.jar && \
+  wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.5.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   echo "python dependencies" && \
   pip3 install --upgrade pip setuptools==49.6.0 && \
