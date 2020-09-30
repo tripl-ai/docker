@@ -83,6 +83,7 @@ RUN \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.865 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.1 \
+  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.4.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.5.0 \
