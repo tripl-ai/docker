@@ -30,11 +30,11 @@ It can be build like:
 To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.4.0
+export ARC_VERSION=3.4.1
 export SPARK_VERSION=3.0.1
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.6.0
+export ARC_JUPYTER_VERSION=3.6.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
@@ -53,11 +53,11 @@ docker build . \
 To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.4.0
+export ARC_VERSION=3.4.1
 export SPARK_VERSION=3.0.1
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.6.0
+export ARC_JUPYTER_VERSION=3.6.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 

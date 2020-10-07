@@ -51,7 +51,7 @@ RUN apt-get update && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
   cd arc-jupyterlab-extension && \
-  git checkout tags/0.0.6 && \
+  git checkout tags/0.0.7 && \
   jupyter labextension disable completer-extension && \
   jupyter labextension disable mathjax-extension && \
   jupyter labextension disable extensionmanager-extension && \

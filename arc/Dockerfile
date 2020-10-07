@@ -80,12 +80,12 @@ RUN \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.865 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.875 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.1 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.4.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.4.1 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.5.0 \
   ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.0.0 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
@@ -93,10 +93,10 @@ RUN \
   ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.3.0 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.238 \
-  com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8 \
-  mysql:mysql-connector-java:8.0.20 \
-  org.postgresql:postgresql:42.2.14 \
+  com.facebook.presto:presto-jdbc:0.241 \
+  com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8 \
+  mysql:mysql-connector-java:8.0.21 \
+  org.postgresql:postgresql:42.2.16 \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
