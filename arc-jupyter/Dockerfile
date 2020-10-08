@@ -46,7 +46,7 @@ RUN apt-get update && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download jupyterlab" && \
-  pip3 install jupyterlab==2.2.8 jupyterlab-git && \
+  pip3 install jupyterlab==2.2.8 jupyterlab-git==0.21.1 && \
   jupyter lab build && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
