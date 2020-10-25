@@ -101,6 +101,8 @@ COPY arc-jupyter/kernel.json /usr/local/share/jupyter/kernels/arc/kernel.json
 
 WORKDIR /home/$NB_USER
 
+EXPOSE 8080
+
 # override the official spark image entry point
 ENTRYPOINT [""]
 CMD ["/home/jovyan/.run_jupyter.sh"]
