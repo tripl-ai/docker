@@ -100,6 +100,7 @@ RUN \
   com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
+  com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
   # blas
   com.github.fommil.netlib:all:1.1.2 \
   # grpc override
