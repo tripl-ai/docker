@@ -90,6 +90,10 @@ RUN apt-get update && \
   rm -rf /root/.m2 && \
   rm -rf /tmp/*
 
+# disable downloading of files
+COPY notebook/base/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/base/handlers.py
+COPY notebook/files/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/files/handlers.py
+
 # inject run command
 COPY arc-jupyter/.run_jupyter.sh /home/$NB_USER
 RUN chmod +x /home/$NB_USER/.run_jupyter.sh && \
