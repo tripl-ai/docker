@@ -91,8 +91,8 @@ RUN apt-get update && \
   rm -rf /tmp/*
 
 # disable downloading of files
-COPY notebook/base/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/base/handlers.py
-COPY notebook/files/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/files/handlers.py
+COPY arc-jupyter/notebook/base/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/base/handlers.py
+COPY arc-jupyter/notebook/files/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/files/handlers.py
 
 # inject run command
 COPY arc-jupyter/.run_jupyter.sh /home/$NB_USER
