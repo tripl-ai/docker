@@ -77,6 +77,7 @@ jobs:
         docker push ghcr.io/tripl-ai/arc:latest
       fi
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}'
+    condition: always()
 
   # this script builds the arc-jupyter image using the arc image
   - script: |
@@ -115,3 +116,4 @@ jobs:
       end
 
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}'
+    condition: always()
