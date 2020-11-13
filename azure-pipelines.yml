@@ -38,11 +38,10 @@ jobs:
       cat $(githubToken.secureFilePath) | docker login ghcr.io -u seddonm1 --password-stdin
     displayName: 'login to github package registry hub to allow push to tripl.ai packages'
 
-  - script: |
-
-
   # this script builds the arc image using the spark k8s image
   - script: |
+      set -e
+
       export ARC_VERSION=$(arc_version)
       export SPARK_VERSION=$(spark_version)
       export SCALA_VERSION=$(scala_version)
@@ -80,6 +79,8 @@ jobs:
 
   # this script builds the arc-jupyter image using the arc image
   - script: |
+      set -e
+
       export ARC_VERSION=$(arc_version)
       export SPARK_VERSION=$(spark_version)
       export SCALA_VERSION=$(scala_version)
