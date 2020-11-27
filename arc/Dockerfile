@@ -81,6 +81,7 @@ RUN \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.875 \
+  --force-version com.google.protobuf:protobuf-java:3.13.0 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
