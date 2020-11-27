@@ -109,6 +109,7 @@ RUN \
   io.grpc:grpc-netty-shaded:1.30.2 \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
+  rm /opt/spark/jars/protobuf-java-2.5.0.jar && \
   python3 /tmp/merge-jars.py && \
   wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.6.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
