@@ -81,9 +81,7 @@ RUN \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.875 \
-  --force-version com.google.protobuf:protobuf-java:3.13.0 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.1.1 \
@@ -109,7 +107,6 @@ RUN \
   io.grpc:grpc-netty-shaded:1.30.2 \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
-  rm /opt/spark/jars/protobuf-java-2.5.0.jar && \
   python3 /tmp/merge-jars.py && \
   wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.6.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
