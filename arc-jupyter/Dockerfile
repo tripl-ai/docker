@@ -38,7 +38,7 @@ COPY arc-jupyter/.jupyter /opt/.jupyter
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN apt-get update && \
-  apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget nodejs npm && \
+  apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget iputils-ping nodejs npm && \
   echo "install jupyter and dependencies" && \
   pip3 install jupyter jupyterhub pandoc GitPython pyarrow google-cloud-storage gcsfs git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
   chmod -R 755 /opt/.jupyter && \
