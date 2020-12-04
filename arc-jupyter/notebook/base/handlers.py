@@ -710,8 +710,13 @@ class AuthenticatedFileHandler(IPythonHandler, web.StaticFileHandler):
 
     @web.authenticated
     def get(self, path):
+
         # arc disable download
-        raise web.HTTPError(401)
+        if "CONF_ALLOW_EXPORT" in os.environ:
+            if os.getenv("CONF_ALLOW_EXPORT").lower() != 'true':
+                raise web.HTTPError(401)
+        else:
+            raise web.HTTPError(401)
 
         self.check_xsrf_cookie()
 

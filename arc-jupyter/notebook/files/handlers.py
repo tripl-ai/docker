@@ -39,7 +39,11 @@ class FilesHandler(IPythonHandler):
     def get(self, path, include_body=True):
 
         # arc disable download
-        raise web.HTTPError(401)
+        if "CONF_ALLOW_EXPORT" in os.environ:
+            if os.getenv("CONF_ALLOW_EXPORT").lower() != 'true':
+                raise web.HTTPError(401)
+        else:
+            raise web.HTTPError(401)
 
         # /files/ requests must originate from the same site
         self.check_xsrf_cookie()
