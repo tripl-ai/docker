@@ -85,11 +85,11 @@ RUN \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.1 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.2.0 \
+  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.3.0 \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.4.1 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.5.0 \
   ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.0.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.11.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.11.1 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.3.0 \
