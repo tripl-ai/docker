@@ -80,19 +80,19 @@ RUN \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.875 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.930 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.1 \
-  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.3.2 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.4.1 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.0.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.12.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.3.0 \
+  # moved to lib to support assembly: ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.1 \
+  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.7.0 \
+  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.5.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.6.0 \
+  ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.1.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.13.0 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
+  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.4.0 \
   # drivers
   com.facebook.presto:presto-jdbc:0.241 \
   com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8 \
