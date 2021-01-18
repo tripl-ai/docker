@@ -712,10 +712,20 @@ class AuthenticatedFileHandler(IPythonHandler, web.StaticFileHandler):
     def get(self, path):
 
         # arc disable download
-        if "CONF_ALLOW_EXPORT" in os.environ:
-            if os.getenv("CONF_ALLOW_EXPORT").lower() != 'true':
-                raise web.HTTPError(401)
-        else:
+        # if allow_export is set to false then that takes precedence
+        # if allow_export == true and CONF_ALLOW_EXPORT == true then allow
+        # else disallow
+        try:
+            with open('/home/jovyan/.allow_export') as f:
+                if f.readline().strip().lower() != 'true':
+                    raise web.HTTPError(401)
+                else:
+                    if "CONF_ALLOW_EXPORT" in os.environ:
+                        if os.getenv("CONF_ALLOW_EXPORT").lower() != 'true':
+                            raise web.HTTPError(401)
+                    else:
+                        raise web.HTTPError(401)
+        except:
             raise web.HTTPError(401)
 
         self.check_xsrf_cookie()

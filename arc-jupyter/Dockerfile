@@ -4,6 +4,9 @@ FROM $FROM_IMAGE
 # sudo password if set
 ARG PASSWD
 
+# allow export
+ARG ALLOW_EXPORT
+
 # Versions
 ARG ARC_JUPYTER_VERSION
 RUN test -n "$ARC_JUPYTER_VERSION"
@@ -90,14 +93,17 @@ RUN apt-get update && \
   rm -rf /root/.m2 && \
   rm -rf /tmp/*
 
-# disable downloading of files
-COPY arc-jupyter/notebook/base/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/base/handlers.py
-COPY arc-jupyter/notebook/files/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/files/handlers.py
-
 # inject run command
 COPY arc-jupyter/.run_jupyter.sh /home/$NB_USER
 RUN chmod +x /home/$NB_USER/.run_jupyter.sh && \
   chown -R $NB_USER:users /home/$NB_USER
+
+# disable downloading of files
+COPY arc-jupyter/notebook/base/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/base/handlers.py
+COPY arc-jupyter/notebook/files/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/files/handlers.py
+RUN if [ -n "$ALLOW_EXPORT" ] && [ "$ALLOW_EXPORT" == "true" ]; then echo "true" > /home/$NB_USER/.allow_export; else echo "false" > /home/$NB_USER/.allow_export; fi && \
+  chmod 644 /home/$NB_USER/.allow_export
+
 USER $NB_USER
 
 # add the kernel to start arc

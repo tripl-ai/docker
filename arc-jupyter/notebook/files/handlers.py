@@ -39,10 +39,20 @@ class FilesHandler(IPythonHandler):
     def get(self, path, include_body=True):
 
         # arc disable download
-        if "CONF_ALLOW_EXPORT" in os.environ:
-            if os.getenv("CONF_ALLOW_EXPORT").lower() != 'true':
-                raise web.HTTPError(401)
-        else:
+        # if allow_export is set to false then that takes precedence
+        # if allow_export == true and CONF_ALLOW_EXPORT == true then allow
+        # else disallow
+        try:
+            with open('/home/jovyan/.allow_export') as f:
+                if f.readline().strip().lower() != 'true':
+                    raise web.HTTPError(401)
+                else:
+                    if "CONF_ALLOW_EXPORT" in os.environ:
+                        if os.getenv("CONF_ALLOW_EXPORT").lower() != 'true':
+                            raise web.HTTPError(401)
+                    else:
+                        raise web.HTTPError(401)
+        except:
             raise web.HTTPError(401)
 
         # /files/ requests must originate from the same site

@@ -34,7 +34,7 @@ export ARC_VERSION=3.7.0
 export SPARK_VERSION=3.0.1
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.12.0
+export ARC_JUPYTER_VERSION=3.12.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
@@ -57,15 +57,17 @@ export ARC_VERSION=3.7.0
 export SPARK_VERSION=3.0.1
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.12.0
+export ARC_JUPYTER_VERSION=3.12.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
+export ALLOW_EXPORT=true
 
 export FROM_IMAGE=ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
 docker build . \
 -f arc-jupyter/Dockerfile \
 --build-arg FROM_IMAGE \
 --build-arg ARC_JUPYTER_VERSION \
+--build-arg ALLOW_EXPORT \
 -t ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
 ```
 

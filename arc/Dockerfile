@@ -89,7 +89,7 @@ RUN \
   ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.5.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.1.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.13.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.14.0 \
   ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
   ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
   ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.4.0 \

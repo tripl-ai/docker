@@ -14,7 +14,7 @@ jobs:
 
   variables:
     arc_version: '3.7.0'
-    arc-jupyter_version: '3.12.0'
+    arc-jupyter_version: '3.12.1'
     spark_version: '3.0.1'
     hadoop_version: '3.2.0'
     scala_version: '2.12'
@@ -87,6 +87,7 @@ jobs:
       export ARC_IMAGE_VERSION=$(cat arc/version)
       export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
       export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
+      export ALLOW_EXPORT=true
 
       if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} >/dev/null; then
         echo "skip due to image already exists: ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}"
@@ -95,8 +96,8 @@ jobs:
         docker build . \
         -f arc-jupyter/Dockerfile \
         --build-arg FROM_IMAGE \
-        --build-arg PASSWD=$(PASSWD) \
         --build-arg ARC_JUPYTER_VERSION \
+        --build-arg ALLOW_EXPORT \
         -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
 
         docker push triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
