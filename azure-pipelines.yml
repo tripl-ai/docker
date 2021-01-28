@@ -87,6 +87,7 @@ jobs:
       export ARC_IMAGE_VERSION=$(cat arc/version)
       export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
       export FROM_IMAGE=triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
+      export NB_USER=jovyan
       export ALLOW_EXPORT=true
 
       if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} >/dev/null; then
@@ -97,6 +98,7 @@ jobs:
         -f arc-jupyter/Dockerfile \
         --build-arg FROM_IMAGE \
         --build-arg ARC_JUPYTER_VERSION \
+        --build-arg NB_USER \
         --build-arg ALLOW_EXPORT \
         -t triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
 

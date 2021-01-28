@@ -7,9 +7,13 @@ ARG PASSWD
 # allow export
 ARG ALLOW_EXPORT
 
-# Versions
+# versions
 ARG ARC_JUPYTER_VERSION
 RUN test -n "$ARC_JUPYTER_VERSION"
+
+# user
+ARG NB_USER
+RUN test -n "$NB_USER"
 
 ENV \
   ARC_JUPYTER_VERSION=$ARC_JUPYTER_VERSION \
@@ -18,10 +22,10 @@ ENV \
   SPARK_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark/ \
   SPARK_CHECKSUM_URL=https://www.apache.org/dist/spark \
   SPARK_KEYS_URL=https://www.apache.org/dist/spark/KEYS \
-  PATH=$PATH:$SPARK_HOME/bin
+  NB_USER=$NB_USER \
+  PATH=$PATH:/home/$NB_USER:$SPARK_HOME/bin
 
 # add user
-ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
@@ -49,7 +53,7 @@ RUN apt-get update && \
   mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download jupyterlab" && \
-  pip3 install jupyterlab==2.2.9 jupyterlab-git==0.23.2 && \
+  pip3 install jupyterlab==2.2.9 jupyterlab-git==0.23.3 && \
   jupyter lab build && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
@@ -115,4 +119,4 @@ EXPOSE 8080
 
 # override the official spark image entry point
 ENTRYPOINT [""]
-CMD ["/home/jovyan/.run_jupyter.sh"]
+CMD ["./.run_jupyter.sh"]

@@ -710,13 +710,12 @@ class AuthenticatedFileHandler(IPythonHandler, web.StaticFileHandler):
 
     @web.authenticated
     def get(self, path):
-
         # arc disable download
         # if allow_export is set to false then that takes precedence
         # if allow_export == true and CONF_ALLOW_EXPORT == true then allow
         # else disallow
         try:
-            with open('/home/jovyan/.allow_export') as f:
+            with open('/home/{}/.allow_export'.format(os.environ['NB_USER'])) as f:
                 if f.readline().strip().lower() != 'true':
                     raise web.HTTPError(401)
                 else:

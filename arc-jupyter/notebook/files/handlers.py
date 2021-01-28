@@ -37,13 +37,12 @@ class FilesHandler(IPythonHandler):
     @web.authenticated
     @gen.coroutine
     def get(self, path, include_body=True):
-
         # arc disable download
         # if allow_export is set to false then that takes precedence
         # if allow_export == true and CONF_ALLOW_EXPORT == true then allow
         # else disallow
         try:
-            with open('/home/jovyan/.allow_export') as f:
+            with open('/home/{}/.allow_export'.format(os.environ['NB_USER'])) as f:
                 if f.readline().strip().lower() != 'true':
                     raise web.HTTPError(401)
                 else:
