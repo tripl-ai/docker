@@ -50,7 +50,7 @@ COPY .m2 /root/.m2
 # delete any /tmp/coursier/jars with different versions from the ${SPARK_JARS} directory
 # move the jars to ${SPARK_JARS}
 
-RUN \
+RUN set -ex && \
   # add stretch respository so we can get libgfortran3 needed for openblas
   # see https://github.com/fommil/netlib-java/issues/62 for native blas debug process
   echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list && \

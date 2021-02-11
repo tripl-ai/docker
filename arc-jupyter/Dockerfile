@@ -44,7 +44,8 @@ COPY arc-jupyter/.jupyter /opt/.jupyter
 # copy jar merging script
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
-RUN apt-get update && \
+RUN set -ex && \
+  apt-get update && \
   apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended texlive-generic-recommended wget iputils-ping nodejs npm && \
   echo "install jupyter and dependencies" && \
   pip3 install jupyter jupyterhub pandoc GitPython pyarrow google-cloud-storage gcsfs git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
@@ -54,7 +55,7 @@ RUN apt-get update && \
   touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download jupyterlab" && \
   pip3 install jupyterlab==2.2.9 jupyterlab-git==0.23.3 && \
-  jupyter lab build && \
+  jupyter lab build --dev-build=False && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
   cd arc-jupyterlab-extension && \
@@ -64,7 +65,7 @@ RUN apt-get update && \
   jupyter labextension disable extensionmanager-extension && \
   jlpm install && \
   jupyter labextension link . && \
-  jupyter lab build && \
+  jupyter lab build --dev-build=False && \
   rm -rf /usr/local/share/jupyter/arc-jupyterlab-extension/node_modules && \
   rm -rf /usr/local/share/jupyter/lab/staging && \
   echo "download cousier and dependencies" && \
