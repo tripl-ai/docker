@@ -98,7 +98,7 @@ RUN set -ex && \
   com.microsoft.sqlserver:mssql-jdbc:9.2.0.jre8 \
   mysql:mysql-connector-java:8.0.23 \
   org.postgresql:postgresql:42.2.19 \
-  com.oracle.ojdbc:ojdbc8:19.10.0.0 \
+  com.oracle.ojdbc:ojdbc8:19.3.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
