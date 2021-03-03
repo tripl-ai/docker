@@ -1,20 +1,5 @@
 These are the official Dockerfiles for https://hub.docker.com/r/triplai
 
-## Features
-
-This is a working document and will be updated as more plugins are built and/or plugins support multiple Scala versions.
-
-| Plugin                                                                                              | Scala 2.11          | Scala 2.12              | Notes                                                           |
-|-----------------------------------------------------------------------------------------------------|---------------------|-------------------------|-----------------------------------------------------------------|
-| [arc-cassandra-pipeline-plugin](https://github.com/tripl-ai/arc-cassandra-pipeline-plugin)          | ✔                   | ✔                       |                                                                 |
-| [arc-deltalake-pipeline-plugin](https://github.com/tripl-ai/arc-deltalake-pipeline-plugin)          | ✔                   | ✔                       |                                                                 |
-| [arc-deltaperiod-config-plugin](https://github.com/tripl-ai/arc-deltaperiod-config-plugin)          | ✔                   | ✔                       |                                                                 |
-| [arc-elasticsearch-pipeline-plugin](https://github.com/tripl-ai/arc-elasticsearch-pipeline-plugin)  | ✔                   |                         | https://github.com/elastic/elasticsearch-hadoop/issues/1224     |
-| [arc-graph-pipeline-plugin](https://github.com/tripl-ai/arc-graph-pipeline-plugin)                  |                     | ✔                       | https://github.com/opencypher/morpheus/issues/917               |
-| [arc-kafka-pipeline-plugin](https://github.com/tripl-ai/arc-kafka-pipeline-plugin)                  | ✔                   | ✔                       |                                                                 |
-| [arc-mongodb-pipeline-plugin](https://github.com/tripl-ai/arc-mongodb-pipeline-plugin)              | ✔                   | ✔                       |                                                                 |
-| [arc-sas-pipeline-plugin](https://github.com/tripl-ai/arc-sas-pipeline-plugin)                      | ✔                   | ✔                       |                                                                 |
-
 ## Building
 
 Then the official Spark `k8s` Dockerfile is used to built a generic Spark image. Both images below then use that image as their base.
@@ -27,14 +12,14 @@ It can be build like:
 
 ### Build arc
 
-To build the [triplai/arc](https://hub.docker.com/r/triplai/arc) image for Scala 2.12:
+To build the [triplai/arc](https://github.com/orgs/tripl-ai/packages/container/package/arc) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.7.0
-export SPARK_VERSION=3.0.1
+export ARC_VERSION=3.8.0
+export SPARK_VERSION=3.1.1
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.12.1
+export ARC_JUPYTER_VERSION=3.13.0
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
@@ -50,14 +35,14 @@ docker build . \
 ```
 ### Build arc-jupyter
 
-To build the [triplai/arc-jupyter](https://hub.docker.com/r/triplai/arc-jupyter) image for Scala 2.12:
+To build the [triplai/arc-jupyter](https://github.com/orgs/tripl-ai/packages/container/package/arc-jupyter) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.7.0
-export SPARK_VERSION=3.0.1
+export ARC_VERSION=3.8.0
+export SPARK_VERSION=3.1.1
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.12.1
+export ARC_JUPYTER_VERSION=3.13.0
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 export NB_USER=jovyan

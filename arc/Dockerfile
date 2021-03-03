@@ -80,7 +80,7 @@ RUN set -ex && \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.930 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.965 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   # moved to lib to support assembly: ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.3.1 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
@@ -94,11 +94,11 @@ RUN set -ex && \
   ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
   ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.4.0 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.241 \
-  com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8 \
-  mysql:mysql-connector-java:8.0.21 \
-  org.postgresql:postgresql:42.2.16 \
-  com.oracle.ojdbc:ojdbc8:19.3.0.0 \
+  com.facebook.presto:presto-jdbc:0.247 \
+  com.microsoft.sqlserver:mssql-jdbc:9.2.0.jre8 \
+  mysql:mysql-connector-java:8.0.23 \
+  org.postgresql:postgresql:42.2.19 \
+  com.oracle.ojdbc:ojdbc8:19.10.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
