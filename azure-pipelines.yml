@@ -50,10 +50,10 @@ jobs:
       export FROM_IMAGE=ghcr.io/tripl-ai/spark:spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}
 
       # if manifest exists then exit with failure else build and push
-      # if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} >/dev/null; then
-      #   echo "skip due to image already exists: ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}"
-      #   exit 0
-      # else
+      if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} >/dev/null; then
+        echo "skip due to image already exists: ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}"
+        exit 1
+      else
         docker build . \
           -f arc/Dockerfile \
           --build-arg FROM_IMAGE \
@@ -73,7 +73,7 @@ jobs:
         docker push ghcr.io/tripl-ai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}
         docker tag triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION} ghcr.io/tripl-ai/arc:latest
         docker push ghcr.io/tripl-ai/arc:latest
-      # fi
+      fi
     displayName: 'build triplai/arc:arc_${ARC_VERSION}_spark_${SPARK_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_IMAGE_VERSION}'
     condition: always()
 
@@ -90,10 +90,11 @@ jobs:
       export NB_USER=jovyan
       export ALLOW_EXPORT=true
 
-      # if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} >/dev/null; then
-      #   echo "skip due to image already exists: ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}"
-      #   exit 0
-      # else
+      # if manifest exists then exit with failure else build and push
+      if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} >/dev/null; then
+        echo "skip due to image already exists: ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}"
+        exit 1
+      else
         docker build . \
         -f arc-jupyter/Dockerfile \
         --build-arg FROM_IMAGE \
@@ -112,6 +113,6 @@ jobs:
         docker push ghcr.io/tripl-ai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}
         docker tag triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION} ghcr.io/tripl-ai/arc-jupyter:latest
         docker push ghcr.io/tripl-ai/arc-jupyter:latest
-      # fi
+      fi
     displayName: 'build triplai/arc-jupyter:arc-jupyter_${ARC_JUPYTER_VERSION}_scala_${SCALA_VERSION}_hadoop_${HADOOP_VERSION}_${ARC_JUPYTER_IMAGE_VERSION}'
     condition: always()
