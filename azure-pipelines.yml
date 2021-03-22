@@ -13,9 +13,9 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   variables:
-    arc_version: '3.8.0'
-    arc-jupyter_version: '3.13.0'
-    spark_version: '3.1.1'
+    arc_version: '3.7.0'
+    arc-jupyter_version: '3.12.1'
+    spark_version: '3.0.2'
     hadoop_version: '3.2.0'
     scala_version: '2.12'
     spark_checksum_url: 'https://www.apache.org/dist/spark'
