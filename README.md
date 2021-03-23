@@ -1,4 +1,4 @@
-These are the official Dockerfiles for https://hub.docker.com/r/triplai
+These are the official Dockerfiles for https://github.com/orgs/tripl-ai/packages
 
 ## Building
 
