@@ -38,6 +38,9 @@ ENV \
 # copy any unmanged libraries
 COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
 
+# copy in configurations to fixed location. these are symlinked later
+COPY arc/conf /etc/spark/conf
+
 # copy merge rules
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
@@ -111,6 +114,9 @@ RUN set -ex && \
   python3 /tmp/merge-jars.py && \
   wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.6.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
+  # symlink the conf overrides as kuberentes may override this directory
+  rm -rf ${SPARK_HOME}/conf && \
+  ln -s /etc/spark/conf ${SPARK_HOME}/conf && \
   echo "python dependencies" && \
   pip3 install --upgrade pip setuptools==49.6.0 && \
   pip3 install pandas numpy scipy pyarrow koalas kubernetes && \
@@ -130,10 +136,6 @@ RUN set -ex && \
   rm -rf /root/.cache && \
   rm -rf /root/.m2 && \
   rm -rf /tmp/*
-
-# copy in configurations
-COPY arc/log4j.properties ${SPARK_HOME}/conf/log4j.properties
-COPY arc/spark-defaults.conf ${SPARK_HOME}/conf/spark-defaults.conf
 
 # set workdir so bin/spark-submit works
 WORKDIR ${SPARK_HOME}
