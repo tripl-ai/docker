@@ -115,7 +115,7 @@ RUN set -ex && \
   wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.6.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   # copy the conf overrides as kuberentes may override this directory
-  rm -rf ${SPARK_HOME}/conf && \
+  rm -rf ${SPARK_HOME}/conf/* && \
   cp -r /etc/spark/conf/* ${SPARK_HOME}/conf && \
   echo "python dependencies" && \
   pip3 install --upgrade pip setuptools==49.6.0 && \
