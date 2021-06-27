@@ -7,7 +7,7 @@ Then the official Spark `k8s` Dockerfile is used to built a generic Spark image.
 It can be build like:
 
 ```bash
-./bin/docker-image-tool.sh -r ghcr.io/tripl-ai -t spark_3.0.2_scala_2.12_hadoop_3.2.0 build
+./bin/docker-image-tool.sh -r ghcr.io/tripl-ai -t spark_3.0.3_scala_2.12_hadoop_3.2.0 build
 ```
 
 ### Build arc
@@ -15,8 +15,8 @@ It can be build like:
 To build the [triplai/arc](https://github.com/orgs/tripl-ai/packages/container/package/arc) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.8.2
-export SPARK_VERSION=3.0.2
+export ARC_VERSION=3.9.0
+export SPARK_VERSION=3.0.3
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
 export ARC_JUPYTER_VERSION=3.13.1
@@ -38,8 +38,8 @@ docker build . \
 To build the [triplai/arc-jupyter](https://github.com/orgs/tripl-ai/packages/container/package/arc-jupyter) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.8.2
-export SPARK_VERSION=3.0.2
+export ARC_VERSION=3.9.0
+export SPARK_VERSION=3.0.3
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
 export ARC_JUPYTER_VERSION=3.13.1
