@@ -83,7 +83,7 @@ RUN set -ex && \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.979 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.1034 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
