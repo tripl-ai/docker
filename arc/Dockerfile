@@ -89,7 +89,7 @@ RUN set -ex && \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
   ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.7.0 \
   ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.7.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.8.0 \
   ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.6.0 \
   ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.2.0 \
   ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.14.0 \
