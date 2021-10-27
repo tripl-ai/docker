@@ -19,7 +19,7 @@ export ARC_VERSION=3.11.0
 export SPARK_VERSION=3.1.2
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.14.0
+export ARC_JUPYTER_VERSION=3.14.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
@@ -42,7 +42,7 @@ export ARC_VERSION=3.11.0
 export SPARK_VERSION=3.1.2
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
-export ARC_JUPYTER_VERSION=3.14.0
+export ARC_JUPYTER_VERSION=3.14.1
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 export NB_USER=jovyan
