@@ -15,7 +15,7 @@ It can be build like:
 To build the [triplai/arc](https://github.com/orgs/tripl-ai/packages/container/package/arc) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.11.0
+export ARC_VERSION=3.11.1
 export SPARK_VERSION=3.1.2
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
@@ -38,7 +38,7 @@ docker build . \
 To build the [triplai/arc-jupyter](https://github.com/orgs/tripl-ai/packages/container/package/arc-jupyter) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=3.11.0
+export ARC_VERSION=3.11.1
 export SPARK_VERSION=3.1.2
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.2.0
