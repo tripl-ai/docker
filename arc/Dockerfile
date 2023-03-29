@@ -36,7 +36,7 @@ ENV \
   LC_ALL=en_US.UTF-8
 
 # copy any unmanged libraries
-COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
+#COPY arc/lib_$SCALA_VERSION/* $SPARK_JARS/
 
 # copy in configurations to fixed location. these are symlinked later
 COPY arc/conf /etc/spark/conf
