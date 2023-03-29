@@ -83,28 +83,28 @@ RUN set -ex && \
   --repository https://repository.mulesoft.org/nexus/content/repositories/public \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
+  --exclude org.scala-lang:scala-library \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.1034 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.7.0 \
-  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.4.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.8.0 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.6.0 \
-  ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.2.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.14.0 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.7.0 \
-  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.4.0 \
+  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.8.0 \
+  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:3.0.0 \
+  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.7.0 \
+  ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.3.0 \
+  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.15.1 \
+  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.5.0 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.247 \
-  com.microsoft.sqlserver:mssql-jdbc:9.2.0.jre8 \
-  mysql:mysql-connector-java:8.0.23 \
-  org.postgresql:postgresql:42.2.19 \
-  com.oracle.ojdbc:ojdbc8:19.3.0.0 \
+  com.facebook.presto:presto-jdbc:0.280 \
+  com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre8 \
+  com.mysql:mysql-connector-j:8.0.32 \
+  org.postgresql:postgresql:42.6.0 \
+  com.oracle.database.jdbc:ojdbc8:21.9.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
-  com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
   # blas
   com.github.fommil.netlib:all:1.1.2 \
   # grpc override
@@ -112,7 +112,8 @@ RUN set -ex && \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
-  wget -P ${SPARK_JARS} https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.1.6.jar && \
+  wget -P ${SPARK_JARS} https://github.com/GoogleCloudDataproc/hadoop-connectors/releases/download/v2.2.12/gcs-connector-hadoop3-2.2.12-shaded.jar && \
+  wget -P ${SPARK_JARS} https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC-2.0.35.1000/AthenaJDBC42-2.0.35.1000.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   # copy the conf overrides as kuberentes may override this directory
   rm -rf ${SPARK_HOME}/conf && \

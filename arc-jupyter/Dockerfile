@@ -46,20 +46,24 @@ COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN set -ex && \
   apt-get update && \
-  apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended wget iputils-ping nodejs npm && \
+  # Install node 16 for extension compilation
+  apt-get install --no-install-recommends -y curl &&  \
+  curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+  apt-get update && \
+  apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended wget iputils-ping nodejs && \
   echo "install jupyter and dependencies" && \
   pip3 install jupyter jupyterhub pandoc GitPython pyarrow google-cloud-storage gcsfs git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
   chmod -R 755 /opt/.jupyter && \
   cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
-  mkdir -p /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc && \
-  touch /usr/local/lib/python3.7/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
+  mkdir -p /usr/local/lib/python3.9/dist-packages/notebook/static/components/codemirror/mode/arc && \
+  touch /usr/local/lib/python3.9/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
   echo "download jupyterlab" && \
-  pip3 install jupyterlab==2.3.1 jupyterlab-git==0.24.0 && \
+  pip3 install jupyterlab==3.6.2 jupyterlab-git==0.41.0 && \
   jupyter lab build --dev-build=False && \
   cd /usr/local/share/jupyter && \
   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
   cd arc-jupyterlab-extension && \
-  git checkout tags/0.0.9 && \
+  git checkout tags/0.0.12 && \
   jupyter labextension disable completer-extension && \
   jupyter labextension disable mathjax-extension && \
   jupyter labextension disable extensionmanager-extension && \
@@ -104,11 +108,11 @@ RUN chmod +x /home/$NB_USER/.run_jupyter.sh && \
   chown -R $NB_USER:users /home/$NB_USER
 
 # disable downloading of files
-COPY arc-jupyter/notebook/base/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/base/handlers.py
-COPY arc-jupyter/notebook/files/handlers.py /usr/local/lib/python3.7/dist-packages/notebook/files/handlers.py
-RUN if [ -n "$ALLOW_EXPORT" ] && [ "$ALLOW_EXPORT" == "true" ]; then echo "true" > /home/$NB_USER/.allow_export; else echo "false" > /home/$NB_USER/.allow_export; fi && \
-  chmod 644 /home/$NB_USER/.allow_export
-
+# COPY arc-jupyter/notebook/base/handlers.py /usr/local/lib/python3.9/dist-packages/notebook/base/handlers.py
+# COPY arc-jupyter/notebook/files/handlers.py /usr/local/lib/python3.9/dist-packages/notebook/files/handlers.py
+# RUN if [ -n "$ALLOW_EXPORT" ] && [ "$ALLOW_EXPORT" == "true" ]; then echo "true" > /home/$NB_USER/.allow_export; else echo "false" > /home/$NB_USER/.allow_export; fi && \
+  # chmod 644 /home/$NB_USER/.allow_export
+# 
 USER $NB_USER
 
 # add the kernel to start arc
