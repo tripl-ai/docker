@@ -1,0 +1,76 @@
+ARG FROM_IMAGE
+FROM 038297999601.dkr.ecr.ap-southeast-2.amazonaws.com/notebook-spark/emr-6.10.0:latest
+
+# Versions
+ARG ARC_VERSION
+ARG SPARK_VERSION
+ARG HADOOP_VERSION
+ARG SCALA_VERSION
+
+USER root
+
+ENV \
+  ARC_VERSION=4.0.0 \
+  SCALA_VERSION=2.12 \
+  ARC_JARS=/usr/lib/arc/jars
+
+
+# copy merge rules
+COPY merge-jars.py /tmp/merge-jars.py
+
+# get coursier to download the jars to /tmp/coursier/jars
+# --exclude to remove libraires
+# include any additional plugins at the bottom
+# delete any /tmp/coursier/jars with different versions from the ${SPARK_JARS} directory
+# move the jars to ${SPARK_JARS}
+
+RUN set -ex && \
+  yum install -y wget
+
+RUN echo "download cousier and dependencies" && \
+  mkdir -p /tmp/coursier/jars && \
+  wget -P /tmp/coursier https://git.io/coursier-cli && \
+  chmod +x /tmp/coursier/coursier-cli && \
+  /tmp/coursier/coursier-cli && \
+  mkdir -p /tmp/.m2/repository
+
+RUN echo "download jars" && \
+  /tmp/coursier/coursier-cli fetch \
+  --cache /tmp/coursier/cache \
+  --no-default \
+  #--repository file:///root/.m2/repository \
+  --repository file:///tmp/.m2/repository \
+  --repository central \
+  --repository sonatype:snapshots \
+  --exclude org.scala-lang:scala-library \
+  #--exclude org.apache.hadoop:hadoop-common \
+  ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
+  #ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.8.0 \
+  #ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  #ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:2.7.0 \
+  #ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.7.0 \
+  #ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.3.0 \
+  #ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.15.1 \
+  #ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  #ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
+  #ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.5.0 \
+  # drivers
+  #com.facebook.presto:presto-jdbc:0.247 \
+  #com.microsoft.sqlserver:mssql-jdbc:9.2.0.jre8 \
+  #mysql:mysql-connector-java:8.0.23 \
+  #org.postgresql:postgresql:42.2.19 \
+  #com.oracle.ojdbc:ojdbc8:19.3.0.0 \
+  #org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
+  #com.syncron.amazonaws:simba-athena-jdbc-driver:2.0.2 \
+  > /tmp/coursier/resolved
+  
+RUN echo "merging jars" && \
+  mkdir -p ${ARC_JARS} && \
+  python3 /tmp/merge-jars.py
+
+#RUN rm -rf /tmp/coursier && \
+#  rm -rf /tmp/merge-jars.py 
+
+#USER hadoop:hadoop
+
+ENTRYPOINT ["bash"]
