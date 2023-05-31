@@ -123,5 +123,5 @@ WORKDIR /home/$NB_USER
 EXPOSE 8080
 
 # override the official spark image entry point
-ENTRYPOINT [""]
+ENTRYPOINT []
 CMD ["./.run_jupyter.sh"]
