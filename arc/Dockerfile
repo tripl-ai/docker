@@ -56,11 +56,11 @@ COPY .m2 /root/.m2
 RUN set -ex && \
   # add stretch respository so we can get libgfortran3 needed for openblas
   # see https://github.com/fommil/netlib-java/issues/62 for native blas debug process
-  echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list && \
+  echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list && \
   apt-get update && \
   apt-get upgrade -y && \
-  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran3 wget htop dnsutils gpg gpg-agent && \
-  rm /etc/apt/sources.list.d/stretch.list && \
+  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran5 wget htop dnsutils gpg gpg-agent && \
+  rm /etc/apt/sources.list.d/bullseye.list && \
   wget -P /tmp $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz\?as_json | \
   python3 -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
   wget -P /tmp ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz.asc && \
@@ -86,34 +86,27 @@ RUN set -ex && \
   --exclude org.scala-lang:scala-library \
   --force-version com.amazonaws:aws-java-sdk-bundle:1.11.1034 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
-  ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
-  ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-dataquality-udf-plugin_${SCALA_VERSION}:1.8.0 \
-  ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
-  ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:3.0.0 \
-  ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.7.0 \
-  ai.tripl:arc-geospark-udf-plugin_${SCALA_VERSION}:1.3.0 \
-  ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.15.1 \
-  ai.tripl:arc-mongodb-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
-  ai.tripl:arc-sas-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
-  ai.tripl:arc-xml-plugin_${SCALA_VERSION}:1.5.0 \
+  #ai.tripl:arc-debezium-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
+  #ai.tripl:arc-deltalake-pipeline-plugin_${SCALA_VERSION}:3.0.0 \
+  #ai.tripl:arc-deltaperiod-config-plugin_${SCALA_VERSION}:1.7.0 \
+  #ai.tripl:arc-kafka-pipeline-plugin_${SCALA_VERSION}:1.15.1 \
   # drivers
-  com.facebook.presto:presto-jdbc:0.280 \
-  com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre8 \
-  com.mysql:mysql-connector-j:8.0.32 \
-  org.postgresql:postgresql:42.6.0 \
-  com.oracle.database.jdbc:ojdbc8:21.9.0.0 \
+  #com.facebook.presto:presto-jdbc:0.280 \
+  #com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre8 \
+  com.mysql:mysql-connector-j:8.3.0 \
+  org.postgresql:postgresql:42.7.1 \
+  #com.oracle.database.jdbc:ojdbc8:21.9.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
   # blas
-  com.github.fommil.netlib:all:1.1.2 \
+  #com.github.fommil.netlib:all:1.1.2 \
   # grpc override
   io.grpc:grpc-netty-shaded:1.30.2 \
   > /tmp/coursier/resolved && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
-  wget -P ${SPARK_JARS} https://github.com/GoogleCloudDataproc/hadoop-connectors/releases/download/v2.2.12/gcs-connector-hadoop3-2.2.12-shaded.jar && \
-  wget -P ${SPARK_JARS} https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC-2.0.35.1000/AthenaJDBC42-2.0.35.1000.jar && \
+  #wget -P ${SPARK_JARS} https://github.com/GoogleCloudDataproc/hadoop-connectors/releases/download/v2.2.12/gcs-connector-hadoop3-2.2.12-shaded.jar && \
+  wget -P ${SPARK_JARS} https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC-2.1.3.1002/AthenaJDBC42-2.1.3.1002.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   # copy the conf overrides as kuberentes may override this directory
   rm -rf ${SPARK_HOME}/conf && \
@@ -126,8 +119,8 @@ RUN set -ex && \
   # spark
   rm -rf ${SPARK_HOME}/examples \
   ${SPARK_HOME}/data && \
-  rm ${SPARK_JARS}/netlib*osx* &&\
-  rm ${SPARK_JARS}/netlib*win* &&\
+  #rm ${SPARK_JARS}/netlib*osx* &&\
+  #rm ${SPARK_JARS}/netlib*win* &&\
   # apt-get
   apt-get remove -y wget gpg gpg-agent && \
   apt-get autoremove -y && \

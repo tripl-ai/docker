@@ -15,11 +15,11 @@ It can be build like:
 To build the [triplai/arc](https://github.com/orgs/tripl-ai/packages/container/package/arc) image for Scala 2.12:
 
 ```bash
-export ARC_VERSION=4.1.0
-export SPARK_VERSION=3.3.2
+export ARC_VERSION=4.2.0
+export SPARK_VERSION=3.3.4
 export SCALA_VERSION=2.12
 export HADOOP_VERSION=3.3.2
-export ARC_JUPYTER_VERSION=3.15.1
+export ARC_JUPYTER_VERSION=3.16.0
 export ARC_IMAGE_VERSION=$(cat arc/version)
 export ARC_JUPYTER_IMAGE_VERSION=$(cat arc-jupyter/version)
 
