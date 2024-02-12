@@ -84,7 +84,7 @@ RUN set -ex && \
   --exclude org.slf4j:slf4j-nop \
   --exclude io.grpc:grpc-netty \
   --exclude org.scala-lang:scala-library \
-  --force-version com.amazonaws:aws-java-sdk-bundle:1.11.1034 \
+  --force-version com.amazonaws:aws-java-sdk-bundle:1.12.525 \
   ai.tripl:arc_${SCALA_VERSION}:${ARC_VERSION} \
   ai.tripl:arc-big-query-pipeline-plugin_${SCALA_VERSION}:1.8.0 \
   ai.tripl:arc-cassandra-pipeline-plugin_${SCALA_VERSION}:1.5.0 \
@@ -113,7 +113,7 @@ RUN set -ex && \
   echo "merging jars" && \
   python3 /tmp/merge-jars.py && \
   wget -P ${SPARK_JARS} https://github.com/GoogleCloudDataproc/hadoop-connectors/releases/download/v2.2.12/gcs-connector-hadoop3-2.2.12-shaded.jar && \
-  wget -P ${SPARK_JARS} https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC-2.0.35.1000/AthenaJDBC42-2.0.35.1000.jar && \
+  wget -P ${SPARK_JARS} https://downloads.athena.us-east-1.amazonaws.com/drivers/JDBC/SimbaAthenaJDBC-2.1.3.1003/AthenaJDBC42-2.1.3.1003.jar && \
   ln -s ${SPARK_JARS}/arc_${SCALA_VERSION}-${ARC_VERSION}.jar ${SPARK_JARS}/arc.jar && \
   # copy the conf overrides as kuberentes may override this directory
   rm -rf ${SPARK_HOME}/conf && \
