@@ -56,11 +56,11 @@ COPY .m2 /root/.m2
 RUN set -ex && \
   # add stretch respository so we can get libgfortran3 needed for openblas
   # see https://github.com/fommil/netlib-java/issues/62 for native blas debug process
-  echo "deb http://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list && \
+  echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list && \
   apt-get update && \
   apt-get upgrade -y && \
-  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran3 wget htop dnsutils gpg gpg-agent && \
-  rm /etc/apt/sources.list.d/stretch.list && \
+  apt-get install --no-install-recommends -y python3 python3-pip libopenblas-base libgfortran5 wget htop dnsutils gpg gpg-agent && \
+  rm /etc/apt/sources.list.d/bullseye.list && \
   wget -P /tmp $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz\?as_json | \
   python3 -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
   wget -P /tmp ${SPARK_CHECKSUM_URL}/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}.tgz.asc && \
@@ -100,8 +100,8 @@ RUN set -ex && \
   # drivers
   com.facebook.presto:presto-jdbc:0.280 \
   com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre8 \
-  com.mysql:mysql-connector-j:8.0.32 \
-  org.postgresql:postgresql:42.6.0 \
+  com.mysql:mysql-connector-j:8.3.0 \
+  org.postgresql:postgresql:42.7.1 \
   com.oracle.database.jdbc:ojdbc8:21.9.0.0 \
   org.apache.hadoop:hadoop-aws:${HADOOP_VERSION} \
   org.apache.hadoop:hadoop-azure:${HADOOP_VERSION} \
