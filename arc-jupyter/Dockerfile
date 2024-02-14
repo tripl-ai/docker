@@ -1,6 +1,8 @@
 ARG FROM_IMAGE
 FROM $FROM_IMAGE
 
+USER root
+
 # sudo password if set
 ARG PASSWD
 
@@ -9,7 +11,8 @@ ARG ALLOW_EXPORT
 
 # versions
 ARG ARC_JUPYTER_VERSION
-RUN test -n "$ARC_JUPYTER_VERSION"
+ARG SCALA_VERSION
+RUN test -n "$ARC_JUPYTER_VERSION" && test -n "$SCALA_VERSION"
 
 # user
 ARG NB_USER
@@ -17,6 +20,9 @@ RUN test -n "$NB_USER"
 
 ENV \
   ARC_JUPYTER_VERSION=$ARC_JUPYTER_VERSION \
+  SCALA_VERSION=$SCALA_VERSION \
+  SPARK_HOME=/opt/spark \
+  SPARK_JARS=/opt/spark/jars \
   JAVA_OPTS="-Xmx1g" \
   BASE_JAVA_OPTS="-XX:+UseG1GC" \
   SPARK_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark/ \
@@ -45,28 +51,28 @@ COPY arc-jupyter/.jupyter /opt/.jupyter
 COPY arc/merge-jars.py /tmp/merge-jars.py
 
 RUN set -ex && \
-  apt-get update && \
-  # Install node 16 for extension compilation
-  apt-get install --no-install-recommends -y curl &&  \
-  curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-  apt-get update && \
-  apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended wget iputils-ping nodejs && \
-  echo "install jupyter and dependencies" && \
-  pip3 install jupyter jupyterhub pandoc GitPython pyarrow google-cloud-storage gcsfs git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
-  chmod -R 755 /opt/.jupyter && \
-  cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
-  mkdir -p /usr/local/lib/python3.9/dist-packages/notebook/static/components/codemirror/mode/arc && \
-  touch /usr/local/lib/python3.9/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
-  echo "download jupyterlab" && \
-  pip3 install jupyterlab==3.6.2 jupyterlab-git==0.41.0 && \
-  jupyter lab build --dev-build=False && \
-  cd /usr/local/share/jupyter && \
-  git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
-  cd arc-jupyterlab-extension && \
-  git checkout tags/0.0.12 && \
-  jupyter labextension disable completer-extension && \
-  jupyter labextension disable mathjax-extension && \
-  jupyter labextension disable extensionmanager-extension && \
+   apt-get update && \
+   # Install node 16 for extension compilation
+   apt-get install --no-install-recommends -y curl &&  \
+   curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+   apt-get update && \
+   apt-get install --no-install-recommends -y git sudo texlive-xetex texlive-fonts-recommended wget iputils-ping nodejs gcc python3-pip python3-dev && \
+   echo "install jupyter and dependencies" && \
+   pip3 install jupyter jupyterhub==3.1.1 pandoc GitPython pyarrow google-cloud-storage gcsfs git+https://github.com/tripl-ai/nb_extension_arcexport.git@0.0.5 && \
+   chmod -R 755 /opt/.jupyter && \
+   cp -r /opt/.jupyter /home/${NB_USER}/.jupyter && \
+   mkdir -p /usr/local/lib/python3.8/dist-packages/notebook/static/components/codemirror/mode/arc && \
+   touch /usr/local/lib/python3.8/dist-packages/notebook/static/components/codemirror/mode/arc/arc.js && \
+   echo "download jupyterlab" && \
+   pip3 install jupyterlab==3.6.2 jupyterlab-git==0.41.0 && \
+   jupyter lab build --dev-build=False && \
+   cd /usr/local/share/jupyter && \
+   git clone https://github.com/tripl-ai/arc-jupyterlab-extension.git && \
+   cd arc-jupyterlab-extension && \
+   git checkout tags/0.0.15 && \
+   jupyter labextension disable completer-extension && \
+   jupyter labextension disable mathjax-extension && \
+   jupyter labextension disable extensionmanager-extension && \
   jlpm install && \
   jupyter labextension link . && \
   jupyter lab build --dev-build=False && \
@@ -123,5 +129,5 @@ WORKDIR /home/$NB_USER
 EXPOSE 8080
 
 # override the official spark image entry point
-ENTRYPOINT [""]
+ENTRYPOINT []
 CMD ["./.run_jupyter.sh"]
